@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'daisy_creator.ui'
+# Form implementation generated from reading ui file 'daisy_creator_mag.ui'
 #
-# Created: Fri Sep  7 17:53:24 2012
+# Created: Thu Oct 18 11:35:51 2012
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -276,24 +276,6 @@ class Ui_DaisyMain(object):
         self.commandLinkButtonDaisy.setGeometry(QtCore.QRect(640, 420, 111, 191))
         self.commandLinkButtonDaisy.setText(QtGui.QApplication.translate("DaisyMain", "Daisyfizieren", None, QtGui.QApplication.UnicodeUTF8))
         self.commandLinkButtonDaisy.setObjectName(_fromUtf8("commandLinkButtonDaisy"))
-        self.spinBoxEbenen = QtGui.QSpinBox(self.tab_2)
-        self.spinBoxEbenen.setGeometry(QtCore.QRect(130, 250, 59, 27))
-        self.spinBoxEbenen.setObjectName(_fromUtf8("spinBoxEbenen"))
-        self.label = QtGui.QLabel(self.tab_2)
-        self.label.setGeometry(QtCore.QRect(30, 250, 121, 21))
-        self.label.setText(QtGui.QApplication.translate("DaisyMain", "Anzahl Ebenen", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setObjectName(_fromUtf8("label"))
-        self.spinBoxPages = QtGui.QSpinBox(self.tab_2)
-        self.spinBoxPages.setGeometry(QtCore.QRect(360, 250, 59, 27))
-        self.spinBoxPages.setObjectName(_fromUtf8("spinBoxPages"))
-        self.label_14 = QtGui.QLabel(self.tab_2)
-        self.label_14.setGeometry(QtCore.QRect(250, 250, 91, 21))
-        self.label_14.setText(QtGui.QApplication.translate("DaisyMain", "Anzahl Seiten", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_14.setObjectName(_fromUtf8("label_14"))
-        self.lineEditDaisyTrenner = QtGui.QLineEdit(self.tab_2)
-        self.lineEditDaisyTrenner.setGeometry(QtCore.QRect(24, 190, 610, 27))
-        self.lineEditDaisyTrenner.setText(QtGui.QApplication.translate("DaisyMain", "Dieses Feld ist noch nicht aktiv", None, QtGui.QApplication.UnicodeUTF8))
-        self.lineEditDaisyTrenner.setObjectName(_fromUtf8("lineEditDaisyTrenner"))
         self.progressBarDaisy = QtGui.QProgressBar(self.tab_2)
         self.progressBarDaisy.setGeometry(QtCore.QRect(24, 641, 610, 25))
         self.progressBarDaisy.setProperty("value", 24)
@@ -302,6 +284,10 @@ class Ui_DaisyMain(object):
         self.pushButtonClose2.setGeometry(QtCore.QRect(640, 640, 111, 27))
         self.pushButtonClose2.setText(QtGui.QApplication.translate("DaisyMain", "Quit", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButtonClose2.setObjectName(_fromUtf8("pushButtonClose2"))
+        self.checkBoxDaisyEbene = QtGui.QCheckBox(self.tab_2)
+        self.checkBoxDaisyEbene.setGeometry(QtCore.QRect(30, 200, 301, 22))
+        self.checkBoxDaisyEbene.setText(QtGui.QApplication.translate("DaisyMain", "Ebenen aus Dateinamen ermitteln", None, QtGui.QApplication.UnicodeUTF8))
+        self.checkBoxDaisyEbene.setObjectName(_fromUtf8("checkBoxDaisyEbene"))
         self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
         self.tab_4 = QtGui.QWidget()
         self.tab_4.setObjectName(_fromUtf8("tab_4"))

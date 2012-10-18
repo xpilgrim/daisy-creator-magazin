@@ -800,65 +800,6 @@
          <string>Daisyfizieren</string>
         </property>
        </widget>
-       <widget class="QSpinBox" name="spinBoxEbenen">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>250</y>
-          <width>59</width>
-          <height>27</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>250</y>
-          <width>121</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Anzahl Ebenen</string>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="spinBoxPages">
-        <property name="geometry">
-         <rect>
-          <x>360</x>
-          <y>250</y>
-          <width>59</width>
-          <height>27</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_14">
-        <property name="geometry">
-         <rect>
-          <x>250</x>
-          <y>250</y>
-          <width>91</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Anzahl Seiten</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEditDaisyTrenner">
-        <property name="geometry">
-         <rect>
-          <x>24</x>
-          <y>190</y>
-          <width>610</width>
-          <height>27</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Dieses Feld ist noch nicht aktiv</string>
-        </property>
-       </widget>
        <widget class="QProgressBar" name="progressBarDaisy">
         <property name="geometry">
          <rect>
@@ -883,6 +824,19 @@
         </property>
         <property name="text">
          <string>Quit</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBoxDaisyEbene">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>200</y>
+          <width>301</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Ebenen aus Dateinamen ermitteln</string>
         </property>
        </widget>
       </widget>

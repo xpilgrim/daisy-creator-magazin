@@ -4,7 +4,7 @@
 """
 Autor: Joerg Sorge
 Distributed under the terms of GNU GPL version 2 or later
-Copyright (C) Joerg Sorge joergsorge@gmail.com
+Copyright (C) Joerg Sorge joergsorge at googel
 2012-06-20
 
 Dieses Programm 
@@ -16,7 +16,7 @@ python-mutagen
 sudo apt-get install python-mutagen
 
 GUI aktualisieren mit:
-pyuic4 daisy_creator.ui -o daisy_creator_ui.py
+pyuic4 daisy_creator_mag.ui -o daisy_creator_mag_ui.py
 """ 
  
 from PyQt4 import QtGui, QtCore
@@ -36,12 +36,13 @@ from mutagen.id3 import ID3NoHeaderError
 import ConfigParser
 import daisy_creator_mag_ui
 
-#TODO: Pages und Ebenen veraenderbar machen 
+#TODO: fehlende Metadatenabfangen
 
 class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
-    """ The second parent must be 'Ui_<obj. name of main widget class>'.
-       
-       """
+    """ 
+    mainClass
+    The second parent must be 'Ui_<obj. name of main widget class>'.
+    """
  
     def __init__(self, parent=None):
         super(DaisyCopy, self).__init__(parent)
@@ -51,15 +52,14 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         # Pass this "self" for building widgets and
         # keeping a reference.
         self.app_debugMod = "yes"
-        self.app_bhzItems = ["amnesty_journal", "Brennpunkt_Seelsorge", "Israelnachrichten",  "Publik_Forum"]        
-        self.app_prevAusgItems = ["10",  "11",  "12",  "22",  "23",  "24",  "25"]
-        self.app_currentAusgItems = ["01", "02", "03",  "04",  "05",  "06",  "07",  "08",  "09",  "10",  "11",  "12",  "13",  "14",  "15",  "16",  "17",  "18",  "19",  "20",  "21",  "22",  "23",  "24",  "25"]
-        self.app_nextAusgItems = ["01",  "02",  "03",  "04"]
+        self.app_bhzItems = ["amnesty_journal", "Bibel_fuer_heute", "Brennpunkt_Seelsorge", "Israelnachrichten",  "Publik_Forum"]        
+        self.app_prevAusgItems = ["10",  "11",  "12",  "22",  "23",  "24"]
+        self.app_currentAusgItems = ["I", "II", "III", "IV", "01", "02", "03",  "04",  "05",  "06",  "07",  "08",  "09",  "10",  "11",  "12",  "13",  "14",  "15",  "16",  "17",  "18",  "19",  "20",  "21",  "22",  "23",  "24"]
+        self.app_nextAusgItems = ["I", "II", "01",  "02",  "03"]
         self.app_bhzPfad = "/home/buero2/data_server_2/Data_2012/Produktion_BHZ"
         self.app_bhzPfadMeta = "/home/buero2/data_server_2/Data_2012/Produktion_BHZ/Daisy_Meta"
         self.app_bhzPfadAusgabeansage = "/home/buero2/data_server_2/Data_2012/Produktion_BHZ/Ausgabeansagen/BHZ_Ausgabe"
         self.app_bhzPfadIntro = "/home/buero2/data_server_2/Data_2012/Produktion_BHZ/Intros"
-        #self.app_audioBitrate = 64000
         self.connectActions()
     
     def connectActions(self):
@@ -280,6 +280,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             with open( fileToCopySource ) as f: pass
         except IOError as e:
             self.showDebugMessage(  u"File not exists" )
+            self.textEdit.append("<b>Intro nicht vorhanden</b>")
             fileNotExist = "yes"
         
         if  fileNotExist is None:
@@ -300,6 +301,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             with open( fileToCopySource ) as f: pass
         except IOError as e:
             self.showDebugMessage(  u"File not exists" )
+            self.textEdit.append("<b>Ausgabeansage nicht vorhanden</b>")
             fileNotExist = "yes"
         
         if  fileNotExist is None:
@@ -409,7 +411,19 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             return None
     
     def metaLoadFile(self ):
+        fileNotExist = None
+        try:
+            with open( str(self.lineEditMetaSource.text()) ) as f: pass
+        except IOError as e:
+            self.showDebugMessage(  u"File not exists" )
+            self.textEdit.append("<b>Meta-Datei konnte nicht geladen werden</b>")   
+            fileNotExist = "yes"
+        
+        if  fileNotExist is not None:
+            return
+        
         config = ConfigParser.RawConfigParser()
+        
         # Pfad von QTString in String  umwandeln
         config.read(str(self.lineEditMetaSource.text()))
         self.lineEditMetaProducer.setText(config.get('Daisy_Meta', 'Produzent'))
@@ -455,7 +469,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         totalAudioLength = lTimes[0]
         lTotalElapsedTime = lTimes[1]
         lFileTime = lTimes[2]
-        print totalAudioLength
+        #print totalAudioLength
         totalTime = timedelta(seconds = totalAudioLength)
         # umwandlung von timedelta in string: minuten und sekunden musten immer zweistllig sein, 
         # damit einstellige stunde eine null bekommt :zfill(8)
@@ -491,6 +505,14 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
     
     def writeNCC(self, cTotalTime,  zMp3,  dirAudios):
         """NCC-Page schreiben"""
+        # Ebene
+        maxEbene = "1"
+        # Max. Ebene ermitteln
+        if self.checkBoxDaisyEbene.isChecked():
+            for item in dirAudios:
+                if  item[5:6] > maxEbene:
+                    maxEbene = item[5:6]
+        
         try:
             fOutFile = open( os.path.join( str(self.lineEditDaisySource.text()), "ncc.html")  , 'w')
         except IOError as (errno, strerror):
@@ -519,8 +541,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             fOutFile.write( '<meta name="ncc:sidebars" content="0"/>'+ '\r\n')
             fOutFile.write( '<meta name="ncc:prodnotes" content="0"/>'+ '\r\n')
             fOutFile.write( '<meta name="ncc:footnotes" content="0"/>'+ '\r\n')
-            fOutFile.write( '<meta name="ncc:depth" content="' + str(self.spinBoxEbenen.value())+ '"/>'+ '\r\n')
-            fOutFile.write( '<meta name="ncc:maxPageNormal" content="' +str(self.spinBoxPages.value()) +'"/>'+ '\r\n')
+            fOutFile.write( '<meta name="ncc:depth" content="' + maxEbene + '"/>'+ '\r\n')
+            fOutFile.write( '<meta name="ncc:maxPageNormal" content="0"/>'+ '\r\n')
             fOutFile.write( '<meta name="ncc:charset" content="utf-8"/>'+ '\r\n')
             fOutFile.write( '<meta name="ncc:multimediaType" content="audioNcc"/>'+ '\r\n')
             #fOutFile.write( '<meta name="ncc:kByteSize" content=" "/>'+ '\r\n')
@@ -564,21 +586,25 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                     fOutFile.write('<h1 class="title" id="cnt_0001"><a href="0001.smil#txt_0001">' + self.lineEditMetaAutor.text()+ ": " + self.lineEditMetaTitle.text() + '</a></h1>'+ '\r\n')
                     continue
                 # trennen
-                if self.comboBoxDaisyTrenner.currentText()=="Ausgabe-Nr.":
-                    itemSplit = item.split(self.comboBoxCopyBhzAusg.currentText()+"_")
-                    print itemSplit
-                    print len(itemSplit)
-                    # letzter teil
-                    itemSecond = itemSplit[len(itemSplit)-1]
-                    # davon file-ext abtrennen
-                    itemTitle = itemSecond.split(".mp3")
-                    
+                itemSplit = self.splitFilename( item)
+                cTitle = self.extractTitel( itemSplit)
+                
+                # BHZ Specials
+                # Datum als Titel bei Bfh
+                if self.comboBoxCopyBhz.currentText() == "Bibel_fuer_heute":
+                    if cTitle[2:4] == "00":
+                        cTitleDate = cTitle[0:2]+" - "+ self.comboBoxCopyBhzAusg.currentText()[0:4]
+                    else:
+                        cTitleDate = cTitle[2:4]+"."+cTitle[0:2]+"."+ self.comboBoxCopyBhzAusg.currentText()[0:4]
+                
+                # Ebenen
+                if self.checkBoxDaisyEbene.isChecked():
+                    # mehrere Ebenen, Ebene aus filename (Zahl nach erstem Unterstrich)
+                    self.showDebugMessage( item[5:6] )
+                    fOutFile.write('<h'+ item[5:6] +' id="cnt_'+str(z).zfill(4)+'"><a href="'+str(z).zfill(4)+'.smil#txt_'+str(z).zfill(4)+'">'+ cTitleDate + '</a></h' + item[5:6]+ '>'+ '\r\n')
                 else:
-                    itemSplit = item.split(self.comboBoxDaisyTrenner.currentText())
-                #print itemSplit
-                cTitle = re.sub ("_", " ", itemTitle[0]  ) 
-                fOutFile.write('<h'+ str(self.spinBoxEbenen.value())+' id="cnt_'+str(z).zfill(4)+'"><a href="'+str(z).zfill(4)+'.smil#txt_'+str(z).zfill(4)+'">'+ cTitle + '</a></h1>'+ '\r\n')
-                           
+                    fOutFile.write('<h1 id="cnt_'+str(z).zfill(4)+'"><a href="'+str(z).zfill(4)+'.smil#txt_'+str(z).zfill(4)+'">'+ cTitle + '</a></h1>'+ '\r\n')
+                
             fOutFile.write( "</body>"+ '\r\n')
             fOutFile.write( "</html>"+ '\r\n')
             fOutFile.close
@@ -614,20 +640,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             for item in dirAudios:
                 z +=1
                 # trennen
-                if self.comboBoxDaisyTrenner.currentText()=="Ausgabe-Nr.":
-                    itemSplit = item.split(self.comboBoxCopyBhzAusg.currentText()+"_")
-                    print itemSplit
-                    print len(itemSplit)
-                    # letzter teil
-                    itemSecond = itemSplit[len(itemSplit)-1]
-                    # davon file-ext abtrennen
-                    itemTitle = itemSecond.split(".mp3")
-                    
-                else:
-                    itemSplit = item.split(self.comboBoxDaisyTrenner.currentText())
-                
-                cTitle = re.sub ("_", " ", itemTitle[0]  ) 
-                #fOutFile.write('<ref src="'+str(z).zfill(4)+'.smil" title="' + itemTitle[0] + '" id="smil_' + str(z).zfill(4) + '"/>'+'\r\n')
+                itemSplit = self.splitFilename( item)
+                cTitle = self.extractTitel( itemSplit)  
                 fOutFile.write('<ref src="'+str(z).zfill(4)+'.smil" title="' + cTitle + '" id="smil_' + str(z).zfill(4) + '"/>'+'\r\n')
             
             fOutFile.write( '</body>'+'\r\n')
@@ -650,17 +664,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             else:
                 self.textEditDaisy.append( str(z).zfill(4) +u".smil - File schreiben")
                 # trennen
-                if self.comboBoxDaisyTrenner.currentText()=="Ausgabe-Nr.":
-                    itemSplit = item.split(self.comboBoxCopyBhzAusg.currentText()+"_")
-                    self.showDebugMessage( itemSplit )
-                    self.showDebugMessage( len(itemSplit))
-                    # letzter teil
-                    itemSecond = itemSplit[len(itemSplit)-1]
-                    # davon file-ext abtrennen
-                    itemTitle = itemSecond.split(".mp3")
-                    
-                else:
-                    itemSplit = item.split(self.comboBoxDaisyTrenner.currentText())
+                itemSplit = self.splitFilename( item)
+                cTitle = self.extractTitel( itemSplit)  
                 
                 fOutFile.write( '<?xml version="1.0" encoding="utf-8"?>'+ '\r\n' )
                 fOutFile.write( '<!DOCTYPE smil PUBLIC "-//W3C//DTD SMIL 1.0//EN" "http://www.w3.org/TR/REC-smil/SMIL10.dtd">'+'\r\n')
@@ -700,7 +705,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 fOutFile.write( '<meta name="ncc:timeInThisSmil" content="' + FileTimehhmmss + "." + fileTimeMilliMicro +'" />'+'\r\n')
                 fOutFile.write( '<meta name="dc:format" content="Daisy 2.02"/>'+'\r\n')
                 fOutFile.write( '<meta name="dc:identifier" content="' + self.lineEditMetaRefOrig.text() + '"/>'+'\r\n')
-                cTitle = re.sub ("_", " ", itemTitle[0]  ) 
+                #cTitle = re.sub ("_", " ", itemTitle[0]  ) 
                 #fOutFile.write( '<meta name="dc:title" content="' +  itemTitle[0]  + '"/>'+'\r\n')
                 fOutFile.write( '<meta name="dc:title" content="' +  cTitle  + '"/>'+'\r\n')
                 fOutFile.write( '<layout>'+'\r\n')
@@ -736,7 +741,23 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 fOutFile.close
         self.textEditDaisy.append(u"<b>smil-Dateien geschrieben:</b> " +str(z))
 
-
+    def splitFilename(self,  item):
+        """split filename into list"""
+        if self.comboBoxDaisyTrenner.currentText()=="Ausgabe-Nr.":
+            itemSplit = item.split(self.comboBoxCopyBhzAusg.currentText()+"_")
+            #itemSplit = item.split("_", 2)
+        self.showDebugMessage( itemSplit )
+        self.showDebugMessage( len(itemSplit))
+        return itemSplit
+    
+    def extractTitel(self, itemSplit):
+        # letzter teil
+        itemLeft = itemSplit[len(itemSplit)-1]
+        # davon file-ext abtrennen
+        itemTitle = itemLeft.split(".mp3")
+        cTitle = re.sub ("_", " ", itemTitle[0]  ) 
+        return cTitle
+    
     def showDialogCritical(self,  errorMessage):
         QtGui.QMessageBox.critical(self, "Achtung", errorMessage)
     
@@ -773,14 +794,13 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.comboBoxDaisyTrenner.addItem("_")
         self.comboBoxDaisyTrenner.addItem("_-_")
         self.comboBoxPrefBitrate.addItem("64")
+        self.comboBoxPrefBitrate.addItem("96")
+        self.comboBoxPrefBitrate.addItem("128")
         # Vorbelegung Checkboxen
         self.checkBoxCopyBhzIntro.setChecked(True)
         self.checkBoxCopyBhzAusgAnsage.setChecked(True)
         self.checkBoxCopyID3Change.setChecked(True)
         self.checkBoxCopyBitrateChange.setChecked(True)
-        # Vorbelegung spinboxen
-        self.spinBoxEbenen.setValue(1)
-        self.spinBoxPages.setValue(0)
         self.show()
  
 if __name__=='__main__':
