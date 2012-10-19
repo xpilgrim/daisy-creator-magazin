@@ -96,7 +96,6 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.app_bhzPfadIntro  = config.get('Ordner', 'BHZ-Intro')
         self.app_bhzItems  = config.get('Blindenhoerzeitschriften', 'BHZ').split(",")
     
-
     def actionOpenCopySource(self):
         """Quelle fuer copy"""
         # QtCore.QDir.homePath() 
