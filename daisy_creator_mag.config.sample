@@ -1,0 +1,11 @@
+# sample-Config-File of daisy_creator_mag.config
+
+[Ordner]
+BHZ=/home/mydir/data_bhz
+BHZ-Meta=/home/mydir/data_bhz/Daisy_Meta
+BHZ-Ausgabeansage=/home/mydir/data_bhz/BHZ_Ausgabe
+BHZ-Intro=/home/mydir/data_bhz/Intros
+
+# Magazins, comma separated without spaces
+[Blindenhoerzeitschriften]
+BHZ=amnesty_journal, my_mag, my_mag_1

@@ -36,7 +36,6 @@ from mutagen.id3 import ID3NoHeaderError
 import ConfigParser
 import daisy_creator_mag_ui
 
-#TODO: fehlende Metadatenabfangen
 
 class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
     """ 
@@ -52,14 +51,14 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         # Pass this "self" for building widgets and
         # keeping a reference.
         self.app_debugMod = "yes"
-        self.app_bhzItems = ["amnesty_journal", "Bibel_fuer_heute", "Brennpunkt_Seelsorge", "Israelnachrichten",  "Publik_Forum"]        
+        self.app_bhzItems = ["Zeitschrift"]        
         self.app_prevAusgItems = ["10",  "11",  "12",  "22",  "23",  "24"]
         self.app_currentAusgItems = ["I", "II", "III", "IV", "01", "02", "03",  "04",  "05",  "06",  "07",  "08",  "09",  "10",  "11",  "12",  "13",  "14",  "15",  "16",  "17",  "18",  "19",  "20",  "21",  "22",  "23",  "24"]
         self.app_nextAusgItems = ["I", "II", "01",  "02",  "03"]
-        self.app_bhzPfad = "/home/buero2/data_server_2/Data_2012/Produktion_BHZ"
-        self.app_bhzPfadMeta = "/home/buero2/data_server_2/Data_2012/Produktion_BHZ/Daisy_Meta"
-        self.app_bhzPfadAusgabeansage = "/home/buero2/data_server_2/Data_2012/Produktion_BHZ/Ausgabeansagen/BHZ_Ausgabe"
-        self.app_bhzPfadIntro = "/home/buero2/data_server_2/Data_2012/Produktion_BHZ/Intros"
+        self.app_bhzPfad = QtCore.QDir.homePath() 
+        self.app_bhzPfadMeta = QtCore.QDir.homePath() 
+        self.app_bhzPfadAusgabeansage = QtCore.QDir.homePath() 
+        self.app_bhzPfadIntro = QtCore.QDir.homePath() 
         self.connectActions()
     
     def connectActions(self):
@@ -75,7 +74,29 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.toolButtonDaisySource.clicked.connect(self.actionOpenDaisySource)
         self.pushButtonClose1.clicked.connect(self.actionQuit)
         self.pushButtonClose2.clicked.connect(self.actionQuit)
+
+    def readConfig(self ):
+        """read Config from file"""
+        fileNotExist = None
+        try:
+            with open( "daisy_creator_mag.config" ) as f: pass
+        except IOError as e:
+            self.showDebugMessage(  u"File not exists" )
+            self.textEdit.append("<b>Config-Datei konnte nicht geladen werden...</b>")   
+            fileNotExist = "yes"
+        
+        if  fileNotExist is not None:
+            return
+        
+        config = ConfigParser.RawConfigParser()
+        config.read("daisy_creator_mag.config")
+        self.app_bhzPfad = config.get('Ordner', 'BHZ')
+        self.app_bhzPfadMeta = config.get('Ordner', 'BHZ-Meta')
+        self.app_bhzPfadAusgabeansage  = config.get('Ordner', 'BHZ-Ausgabeansage')
+        self.app_bhzPfadIntro  = config.get('Ordner', 'BHZ-Intro')
+        self.app_bhzItems  = config.get('Blindenhoerzeitschriften', 'BHZ').split(",")
     
+
     def actionOpenCopySource(self):
         """Quelle fuer copy"""
         # QtCore.QDir.homePath() 
@@ -770,6 +791,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
     
     def main(self):
         self.showDebugMessage( u"let's rock" )
+        self.readConfig()
         self.progressBarCopy.setValue(0)
         self.progressBarDaisy.setValue(0)
         # Bhz in Combo
