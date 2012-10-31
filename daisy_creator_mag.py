@@ -44,6 +44,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
     """
  
     def __init__(self, parent=None):
+        """Settings"""
         super(DaisyCopy, self).__init__(parent)
         # This is because Python does not automatically
         # call the parent's constructor.
@@ -62,7 +63,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.connectActions()
     
     def connectActions(self):
-        """Actions definieren"""
+        """define Actions """
         self.toolButtonCopySource.clicked.connect(self.actionOpenCopySource)
         self.toolButtonCopyDest.clicked.connect(self.actionOpenCopyDest)
         self.toolButtonCopyFile1.clicked.connect(self.actionOpenCopyFile1)
@@ -97,7 +98,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.app_bhzItems  = config.get('Blindenhoerzeitschriften', 'BHZ').split(",")
     
     def actionOpenCopySource(self):
-        """Quelle fuer copy"""
+        """Source of copy"""
         # QtCore.QDir.homePath() 
         dirSource = QtGui.QFileDialog.getExistingDirectory(
                         self,
@@ -112,7 +113,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.textEdit.append(dirSource)
     
     def actionOpenDaisySource(self):
-        """Quelle fuer daisy"""
+        """Source of daisy"""
         dirSource = QtGui.QFileDialog.getExistingDirectory(
                         self,
                         "Quell-Ordner",
@@ -126,7 +127,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.textEdit.append(dirSource)
     
     def actionOpenCopyDest(self):
-        """Ziel fuer Copy"""
+        """Destination of Copy"""
         dirDest = QtGui.QFileDialog.getExistingDirectory(
                         self,
                         "Ziel-Ordner",
@@ -140,7 +141,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.textEdit.append(dirDest)
     
     def actionOpenCopyFile1(self):
-        """Zusatzdatei 1 zum kopieren"""
+        """Additional file 1 to copy"""
         file1 = QtGui.QFileDialog.getOpenFileName (
                         self,
                         "Datei 1",
@@ -154,7 +155,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.textEdit.append(file1)
 
     def actionOpenCopyFile2(self):
-        """Zusatzdatei 2 zum kopieren"""
+        """Additional file 2 to copy"""
         file2 = QtGui.QFileDialog.getOpenFileName (
                         self,
                         "Datei 2",
@@ -168,7 +169,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.textEdit.append(file2)
     
     def actionOpenMetaFile(self):
-        """Metadatei zum laden"""
+        """Metafile to load"""
         file = QtGui.QFileDialog.getOpenFileName (
                         self,
                         "Daisy_Meta",
@@ -180,7 +181,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.lineEditMetaSource.setText(file)
     
     def actionRunCopy(self):
-        """Hauptroutine zum Kopieren"""
+        """Mainfunction to copy"""
         if self.lineEditCopySource.text()== "Quell-Ordner":
             errorMessage = u"Quell-Ordner wurde nicht ausgewaehlt.."
             self.showDialogCritical( errorMessage )
@@ -281,7 +282,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         
    
     def copyFile(self, fileToCopySource, fileToCopyDest):
-       """Datei kopieren"""
+       """copy file """
        try:
             shutil.copy( fileToCopySource, fileToCopyDest )
        except Exception, e:
@@ -290,7 +291,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.textEdit.append(logMessage + fileToCopyDest)
     
     def copyIntro(self):
-        """Intro kopieren"""
+        """copy Intro"""
         fileToCopySource = self.app_bhzPfadIntro + "/Intro_" +  self.comboBoxCopyBhz.currentText()  + ".mp3"
         fileToCopyDest = self.lineEditCopyDest.text() + "/0010_" +  self.comboBoxCopyBhz.currentText() + "_" + self.comboBoxCopyBhzAusg.currentText() + "_Intro.mp3"
         self.showDebugMessage(fileToCopySource)
@@ -300,7 +301,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             with open( fileToCopySource ) as f: pass
         except IOError as e:
             self.showDebugMessage(  u"File not exists" )
-            self.textEdit.append("<b>Intro nicht vorhanden</b>")
+            #von QTString in String  umwandeln
+            self.textEdit.append("<font color='red'>Intro nicht vorhanden</font>: " + os.path.basename(str(fileToCopySource)))
             fileNotExist = "yes"
         
         if  fileNotExist is None:
@@ -309,7 +311,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.checkCangeId3( fileToCopyDest)
     
     def copyAusgabeAnsage(self):
-        """Intro kopieren"""
+        """copy issue number"""
         pfadAusgabe = self.app_bhzPfadAusgabeansage + "_" + self.comboBoxCopyBhzAusg.currentText()[0:4] + "_" + self.comboBoxCopyBhz.currentText() 
         self.showDebugMessage(pfadAusgabe)
         fileToCopySource = pfadAusgabe + "/0001_" +  self.comboBoxCopyBhz.currentText() + "_" + self.comboBoxCopyBhzAusg.currentText() + "_Ausgabeansage.mp3"
@@ -321,7 +323,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             with open( fileToCopySource ) as f: pass
         except IOError as e:
             self.showDebugMessage(  u"File not exists" )
-            self.textEdit.append("<b>Ausgabeansage nicht vorhanden</b>")
+            #von QTString in String  umwandeln
+            self.textEdit.append("<font color='red'>Ausgabeansage nicht vorhanden</font>: " + os.path.basename(str(fileToCopySource)))
             fileNotExist = "yes"
         
         if  fileNotExist is None:
@@ -330,7 +333,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.checkCangeId3( fileToCopyDest)
     
     def copyZusatzDatei(self,  n ):
-        """Zusatzdatei kopieren"""
+        """copy additional file kopieren"""
         if n == 1:
             filename = ntpath.basename( str(self.lineEditCopyFile1.text()) )
             patFilenameSource = str(self.lineEditCopyFile1.text())
@@ -350,7 +353,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.checkCangeId3( fileToCopyDest)
 
     def checkCangeId3(self, fileToCopyDest):
-        """id3 Tags pruefen, ev. entfernen"""
+        """check id3 Tags, mayby kill it"""
         tag = None
         try:
             audio = ID3(fileToCopyDest)
@@ -386,7 +389,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         return isChangedAndCopy
     
     def encodeFile(self, fileToCopySource, fileToCopyDest ):
-        """mp3-files mit entspr Bitrate encoden"""
+        """encode mp3-file """
         self.showDebugMessage( u"encode_file" )
         #damit die uebergabe der befehle richtig klappt muessen alle cmds im richtigen zeichensatz als strings encoded sein
         c_lame_encoder = "/usr/bin/lame"
@@ -436,7 +439,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             with open( str(self.lineEditMetaSource.text()) ) as f: pass
         except IOError as e:
             self.showDebugMessage(  u"File not exists" )
-            self.textEdit.append("<b>Meta-Datei konnte nicht geladen werden</b>")   
+            self.textEdit.append("<font color='red'>Meta-Datei konnte nicht geladen werden</font>: " + os.path.basename(str(self.lineEditMetaSource.text())))   
             fileNotExist = "yes"
         
         if  fileNotExist is not None:
@@ -457,7 +460,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.lineEditMetaYear.setText(config.get('Daisy_Meta', 'Jahr'))
     
     def actionRunDaisy(self):
-        """Daisy-Fileset erzeugen"""
+        """create daisy-fileset"""
         if self.lineEditDaisySource.text()== "Quell-Ordner":
             errorMessage = u"Quell-Ordner wurde nicht ausgewaehlt.."
             self.showDialogCritical( errorMessage )
@@ -505,7 +508,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.progressBarDaisy.setValue(100)
     
     def calcAudioLengt(self,  dirAudios):
-        """Gesamtlange der Audios ermitteln"""
+        """calc total length"""
         totalAudioLength =0
         lTotalElapsedTime = []
         lTotalElapsedTime.append(0)
@@ -524,7 +527,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         return lTimes
     
     def writeNCC(self, cTotalTime,  zMp3,  dirAudios):
-        """NCC-Page schreiben"""
+        """write NCC-Page"""
         # Ebene
         maxEbene = "1"
         # Max. Ebene ermitteln
@@ -607,7 +610,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                     continue
                 # trennen
                 itemSplit = self.splitFilename( item)
-                cTitle = self.extractTitel( itemSplit)
+                cTitle = self.extractTitle( itemSplit)
                 
                 # BHZ Specials
                 # Datum als Titel bei Bfh
@@ -631,7 +634,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.textEditDaisy.append(u"<b>NCC-Datei geschrieben</b>")
 
     def writeMasterSmil(self, cTotalTime,  dirAudios):
-        """MasterSmil-Page schreiben"""
+        """write MasterSmil-page"""
         try:
             fOutFile = open( os.path.join( str(self.lineEditDaisySource.text()), "master.smil")  , 'w')
         except IOError as (errno, strerror):
@@ -661,7 +664,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 z +=1
                 # trennen
                 itemSplit = self.splitFilename( item)
-                cTitle = self.extractTitel( itemSplit)  
+                cTitle = self.extractTitle( itemSplit)  
                 fOutFile.write('<ref src="'+str(z).zfill(4)+'.smil" title="' + cTitle + '" id="smil_' + str(z).zfill(4) + '"/>'+'\r\n')
             
             fOutFile.write( '</body>'+'\r\n')
@@ -670,7 +673,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.textEditDaisy.append(u"<b>Master-smil-Datei geschrieben</b>")
 
     def writeSmil(self, lTotalElapsedTime, lFileTime, dirAudios):
-        """Smil-Pages schreiben"""
+        """write Smil-Pages"""
         self.textEditDaisy.append(u"<b>smil-Dateien schreiben...</b> ")
         z = 0
         for item in dirAudios:
@@ -685,7 +688,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 self.textEditDaisy.append( str(z).zfill(4) +u".smil - File schreiben")
                 # trennen
                 itemSplit = self.splitFilename( item)
-                cTitle = self.extractTitel( itemSplit)  
+                cTitle = self.extractTitle( itemSplit)  
                 
                 fOutFile.write( '<?xml version="1.0" encoding="utf-8"?>'+ '\r\n' )
                 fOutFile.write( '<!DOCTYPE smil PUBLIC "-//W3C//DTD SMIL 1.0//EN" "http://www.w3.org/TR/REC-smil/SMIL10.dtd">'+'\r\n')
@@ -725,8 +728,6 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 fOutFile.write( '<meta name="ncc:timeInThisSmil" content="' + FileTimehhmmss + "." + fileTimeMilliMicro +'" />'+'\r\n')
                 fOutFile.write( '<meta name="dc:format" content="Daisy 2.02"/>'+'\r\n')
                 fOutFile.write( '<meta name="dc:identifier" content="' + self.lineEditMetaRefOrig.text() + '"/>'+'\r\n')
-                #cTitle = re.sub ("_", " ", itemTitle[0]  ) 
-                #fOutFile.write( '<meta name="dc:title" content="' +  itemTitle[0]  + '"/>'+'\r\n')
                 fOutFile.write( '<meta name="dc:title" content="' +  cTitle  + '"/>'+'\r\n')
                 fOutFile.write( '<layout>'+'\r\n')
                 fOutFile.write( '<region id="txt-view"/>'+'\r\n')
@@ -770,7 +771,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.showDebugMessage( len(itemSplit))
         return itemSplit
     
-    def extractTitel(self, itemSplit):
+    def extractTitle(self, itemSplit):
+        """extract title """
         # letzter teil
         itemLeft = itemSplit[len(itemSplit)-1]
         # davon file-ext abtrennen
@@ -779,16 +781,20 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         return cTitle
     
     def showDialogCritical(self,  errorMessage):
+        """show messagebox warning"""
         QtGui.QMessageBox.critical(self, "Achtung", errorMessage)
     
     def showDebugMessage(self,  debugMessage):
+        """show messagebox """
         if self.app_debugMod == "yes":
             print debugMessage
     
     def actionQuit(self):
+        """exit the application"""
         QtGui.qApp.quit()
     
     def main(self):
+        """mainfunction"""
         self.showDebugMessage( u"let's rock" )
         self.readConfig()
         self.progressBarCopy.setValue(0)
