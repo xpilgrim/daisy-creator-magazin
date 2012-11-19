@@ -10,8 +10,9 @@ The workflow is as follows:
 - The produced audiofiles are stored as mp3 in a flat struckture with numbered filenames up to 1000
 - Mount the recordet media-card to your PC
 - Now start the daisy-creator-magazin-application to create the daisy-fileset
+
 If finished, you will find in the destinationfolder your audiofiles
-and the daisy-structur for your daisy-player 
+and the daisy-structure for your daisy-player 
 The audiofiles are renamend like your metadata.
 
 General work steps
