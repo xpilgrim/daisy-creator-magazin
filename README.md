@@ -12,7 +12,7 @@ The workflow is as follows:
 - Now start the daisy-creator-magazin-application to create the daisy-fileset
 
 If finished, you will find in the destinationfolder your audiofiles
-and the daisy-structure for your daisy-player 
+and the daisy-structure for your daisy-player. 
 The audiofiles are renamend like your metadata.
 
 General work steps
