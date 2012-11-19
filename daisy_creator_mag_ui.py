@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'daisy_creator_mag.ui'
 #
-# Created: Thu Oct 18 11:35:51 2012
+# Created: Mon Nov 12 21:11:14 2012
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -311,6 +311,12 @@ class Ui_DaisyMain(object):
         self.comboBoxPrefBitrate.setGeometry(QtCore.QRect(24, 120, 610, 27))
         self.comboBoxPrefBitrate.setObjectName(_fromUtf8("comboBoxPrefBitrate"))
         self.tabWidget.addTab(self.tab_4, _fromUtf8(""))
+        self.tab_5 = QtGui.QWidget()
+        self.tab_5.setObjectName(_fromUtf8("tab_5"))
+        self.textEditHelp = QtGui.QTextEdit(self.tab_5)
+        self.textEditHelp.setGeometry(QtCore.QRect(0, 0, 791, 691))
+        self.textEditHelp.setObjectName(_fromUtf8("textEditHelp"))
+        self.tabWidget.addTab(self.tab_5, _fromUtf8(""))
         self.gridLayout.addWidget(self.tabWidget, 0, 0, 1, 1)
         DaisyMain.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(DaisyMain)
@@ -330,4 +336,5 @@ class Ui_DaisyMain(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QtGui.QApplication.translate("DaisyMain", "2 Meta", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtGui.QApplication.translate("DaisyMain", "3 Daisy", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), QtGui.QApplication.translate("DaisyMain", "Pref", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), QtGui.QApplication.translate("DaisyMain", "Help", None, QtGui.QApplication.UnicodeUTF8))
 

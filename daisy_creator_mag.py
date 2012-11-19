@@ -36,6 +36,7 @@ from mutagen.id3 import ID3NoHeaderError
 import ConfigParser
 import daisy_creator_mag_ui
 
+#TODO: Hilfe-Datei einbinden
 
 class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
     """ 
@@ -96,7 +97,26 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.app_bhzPfadAusgabeansage  = config.get('Ordner', 'BHZ-Ausgabeansage')
         self.app_bhzPfadIntro  = config.get('Ordner', 'BHZ-Intro')
         self.app_bhzItems  = config.get('Blindenhoerzeitschriften', 'BHZ').split(",")
-    
+
+    def readHelp(self ):
+        """read Readme from file"""
+        fileNotExist = None
+        try:
+            with open( "README.md" ) as f: pass
+        except IOError as e:
+            self.showDebugMessage(  u"File not exists" )
+            self.textEdit.append("<b>Help-Datei konnte nicht geladen werden...</b>")   
+            fileNotExist = "yes"
+        
+        if  fileNotExist is not None:
+            return
+        
+        fobj = open("README.md")
+        for line in fobj:
+            #print line.rstrip()
+            self.textEditHelp.append(line)
+        fobj.close()
+
     def actionOpenCopySource(self):
         """Source of copy"""
         # QtCore.QDir.homePath() 
@@ -828,6 +848,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.checkBoxCopyBhzAusgAnsage.setChecked(True)
         self.checkBoxCopyID3Change.setChecked(True)
         self.checkBoxCopyBitrateChange.setChecked(True)
+        # Help-Text
+        self.readHelp()
         self.show()
  
 if __name__=='__main__':
