@@ -36,7 +36,6 @@ from mutagen.id3 import ID3NoHeaderError
 import ConfigParser
 import daisy_creator_mag_ui
 
-#TODO: Hilfe-Datei einbinden
 
 class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
     """ 
@@ -230,14 +229,14 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         for item in dirsSource:
             if item[ len(item)-4:len(item) ] == ".MP3" or item[ len(item)-4:len(item) ] == ".mp3":
                 fileToCopySource = self.lineEditCopySource.text() + "/" + item 
-                # pruefen ob file exists
+                # check if file exist
                 fileNotExist = None
                 try:
                     with open( fileToCopySource ) as f: pass
                 except IOError as e:
                     self.showDebugMessage(  u"File not exists" )
                     fileNotExist = "yes"
-                    # max Anzahl korrigieren und Progress aktualisieren
+                    # change max number and update progress
                     zList = zList -1
                     pZ = z *100 / zList 
                     self.progressBarCopy.setValue(pZ)
