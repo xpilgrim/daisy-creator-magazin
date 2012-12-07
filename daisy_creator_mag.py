@@ -581,7 +581,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             fOutFile.write( '<meta name="ncc:pageFront" content="0"/>'+ '\r\n')
             fOutFile.write( '<meta name="ncc:pageSpecial" content="0"/>'+ '\r\n')
             fOutFile.write( '<meta name="ncc:sidebars" content="0"/>'+ '\r\n')
-            fOutFile.write( '<meta name="ncc:prodnotes" content="0"/>'+ '\r\n')
+            fOutFile.write( '<meta name="ncc:prodNotes" content="0"/>'+ '\r\n')
             fOutFile.write( '<meta name="ncc:footnotes" content="0"/>'+ '\r\n')
             fOutFile.write( '<meta name="ncc:depth" content="' + maxEbene + '"/>'+ '\r\n')
             fOutFile.write( '<meta name="ncc:maxPageNormal" content="0"/>'+ '\r\n')
@@ -589,17 +589,13 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             fOutFile.write( '<meta name="ncc:multimediaType" content="audioNcc"/>'+ '\r\n')
             #fOutFile.write( '<meta name="ncc:kByteSize" content=" "/>'+ '\r\n')
             fOutFile.write( '<meta name="ncc:setInfo" content="1 of 1"/>'+ '\r\n')
-            
             fOutFile.write( '<meta name="ncc:sourceDate" content="' + self.lineEditMetaYear.text()+ '"/>'+ '\r\n')
             fOutFile.write( '<meta name="ncc:sourceEdition" content="' + self.lineEditMetaEdition.text() + '"/>'+ '\r\n')
             fOutFile.write( '<meta name="ncc:sourcePublisher" content="' + self.lineEditMetaPublisher.text()+ '"/>'+ '\r\n')
 
             #Anzahl files = Records 2x + ncc.html + master.smil
             fOutFile.write( '<meta name="ncc:files" content="' + str(zMp3 + zMp3 + 2) + '"/>'+ '\r\n')
-            fOutFile.write( '<meta name="ncc:format" content="Daisy 2.0"/>'+ '\r\n')
-            
             fOutFile.write( '<meta name="ncc:producer" content="' + self.lineEditMetaProducer.text()+ '"/>'+ '\r\n')
-            fOutFile.write( '<meta name="ncc:Charset" content="ISO-8859-1"/>'+ '\r\n')
 
             fOutFile.write( '<meta name="dc:creator" content="' + self.lineEditMetaAutor.text()+ '"/>'+ '\r\n')
             fOutFile.write( '<meta name="dc:date" content="' + today.strftime("%Y-%m-%d")+ '"/>'+ '\r\n')
@@ -607,11 +603,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             fOutFile.write( '<meta name="dc:identifier" content="' + self.lineEditMetaRefOrig.text()+ '"/>'+ '\r\n')
             fOutFile.write( '<meta name="dc:language" content="de" scheme="ISO 639"/>'+ '\r\n')
             fOutFile.write( '<meta name="dc:publisher" content="' + self.lineEditMetaPublisher.text()+ '"/>'+ '\r\n')
-
             fOutFile.write( '<meta name="dc:source" content="' +self.lineEditMetaRefOrig.text()+ '"/>'+ '\r\n')
-            fOutFile.write( '<meta name="dc:sourceDate" content="' + self.lineEditMetaYear.text()+ '"/>'+ '\r\n')
-            fOutFile.write( '<meta name="dc:sourceEdition" content="' +self.lineEditMetaEdition.text()+ '"/>'+ '\r\n')
-            fOutFile.write( '<meta name="dc:sourcePublisher" content="' + self.lineEditMetaPublisher.text()+ '"/>'+ '\r\n')
             fOutFile.write( '<meta name="dc:subject" content="' + self.lineEditMetaKeywords.text()+ '"/>'+ '\r\n')
             fOutFile.write( '<meta name="dc:title" content="' +self.lineEditMetaTitle.text()+ '"/>'+ '\r\n')
             # Medibus-OK items
@@ -620,7 +612,6 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             fOutFile.write( '<meta name="prod:localID" content=" "/>'+ '\r\n')      
             fOutFile.write( '</head>'+ '\r\n')
             fOutFile.write( '<body>'+ '\r\n')
-            #fOutFile.write('<h1 class="title" id="cnt_0001"><a href="0001.smil#txt_0001">' + self.lineEditMetaAutor.text()+ ": " + self.lineEditMetaTitle.text() + '</a></h1>'+ '\r\n')
             z = 0
             for item in dirAudios:
                 z +=1
@@ -714,7 +705,6 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 fOutFile.write( '<smil>'+'\r\n')
                 fOutFile.write( '<head>'+'\r\n')
                 fOutFile.write( '<meta name="ncc:generator" content="KOM-IN-DaisyCreator"/>'+'\r\n')
-                fOutFile.write( '<meta name="ncc:format" content="Daisy 2.02"/>'+'\r\n')
                 totalElapsedTime = timedelta(seconds = lTotalElapsedTime[z-1])
                 splittedTtotalElapsedTime = str(totalElapsedTime).split(".")
                 self.showDebugMessage( u"splittedTtotalElapsedTime: ")
