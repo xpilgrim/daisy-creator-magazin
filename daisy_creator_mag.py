@@ -114,6 +114,10 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         for line in fobj:
             #print line.rstrip()
             self.textEditHelp.append(line)
+        #set cursor on top of helpfile
+        cursor = self.textEditHelp.textCursor()
+        cursor.movePosition(QtGui.QTextCursor.Start, QtGui.QTextCursor.MoveAnchor, 0)
+        self.textEditHelp.setTextCursor(cursor)
         fobj.close()
 
     def actionOpenCopySource(self):
