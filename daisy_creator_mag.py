@@ -36,7 +36,6 @@ from mutagen.id3 import ID3NoHeaderError
 import ConfigParser
 import daisy_creator_mag_ui
 
-
 class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
     """ 
     mainClass
@@ -209,7 +208,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             errorMessage = u"Quell-Ordner wurde nicht ausgewaehlt.."
             self.showDialogCritical( errorMessage )
             return
-            
+        
         if self.lineEditCopyDest.text()== "Ziel-Ordner":
             errorMessage = u"Ziel-Ordner wurde nicht ausgewaehlt.."
             self.showDialogCritical( errorMessage )
@@ -218,11 +217,22 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.showDebugMessage(  self.lineEditCopySource.text() )
         self.showDebugMessage(  self.lineEditCopyDest.text() )
         
+        # check for files in source
         try:
             dirsSource = os.listdir( self.lineEditCopySource.text())
         except Exception, e:
-            logMessage = u"read_files_from_dir Error: %s" % str(e)
-            self.showDebugMessage( logMessage)
+            errorMessage = u"Quelle: %s" % str(e)
+            self.showDebugMessage( errorMessage)
+            self.showDialogCritical( errorMessage )
+            return
+        
+        # ceck dir of dest
+        if os.path.exists(self.lineEditCopyDest.text() ) is False:
+            errorMessage = u"Ziel-Ordner existiert nicht.."
+            self.showDebugMessage( errorMessage)
+            self.showDialogCritical( errorMessage )
+            self.lineEditCopyDest.setFocus()
+            return
         
         self.showDebugMessage( dirsSource )
         self.textEdit.append("<b>Kopieren:</b>")
@@ -316,7 +326,10 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
     def copyIntro(self):
         """copy Intro"""
         fileToCopySource = self.app_bhzPfadIntro + "/Intro_" +  self.comboBoxCopyBhz.currentText()  + ".mp3"
-        fileToCopyDest = self.lineEditCopyDest.text() + "/0010_" +  self.comboBoxCopyBhz.currentText() + "_" + self.comboBoxCopyBhzAusg.currentText() + "_Intro.mp3"
+        if self.comboBoxCopyBhz.currentText() == "Bibel_fuer_heute":
+            fileToCopyDest = self.lineEditCopyDest.text() + "/0010_1_" +  self.comboBoxCopyBhz.currentText() + "_" + self.comboBoxCopyBhzAusg.currentText() + "_Intro.mp3"
+        else:
+            fileToCopyDest = self.lineEditCopyDest.text() + "/0010_" +  self.comboBoxCopyBhz.currentText() + "_" + self.comboBoxCopyBhzAusg.currentText() + "_Intro.mp3"
         self.showDebugMessage(fileToCopySource)
         self.showDebugMessage(fileToCopyDest)
         fileNotExist = None
@@ -556,8 +569,10 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         # Max. Ebene ermitteln
         if self.checkBoxDaisyEbene.isChecked():
             for item in dirAudios:
-                if  item[5:6] > maxEbene:
-                    maxEbene = item[5:6]
+                self.showDebugMessage("Ebene: " +  item[5:6] )
+                if re.match("\d{1,}",item[5:6] ) is not None:
+                    if  item[5:6] > maxEbene:
+                        maxEbene = item[5:6]
         
         try:
             fOutFile = open( os.path.join( str(self.lineEditDaisySource.text()), "ncc.html")  , 'w')
@@ -630,9 +645,15 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 # Datum als Titel bei Bfh
                 if self.comboBoxCopyBhz.currentText() == "Bibel_fuer_heute":
                     if cTitle[2:4] == "00":
+                        # Monat - Jahr als Titel
                         cTitleDate = cTitle[0:2]+" - "+ self.comboBoxCopyBhzAusg.currentText()[0:4]
                     else:
-                        cTitleDate = cTitle[2:4]+"."+cTitle[0:2]+"."+ self.comboBoxCopyBhzAusg.currentText()[0:4]
+                        if re.match("\d{4,}",cTitle ) is not None:
+                            # Datum als Titel
+                            cTitleDate = cTitle[2:4]+"."+cTitle[0:2]+"."+ self.comboBoxCopyBhzAusg.currentText()[0:4]
+                        else:
+                            # Titel unveraendert als Titel
+                            cTitleDate = cTitle                        
                 
                 # Ebenen
                 if self.checkBoxDaisyEbene.isChecked():
