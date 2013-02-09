@@ -11,11 +11,15 @@ Dieses Programm
 - kopiert mp3-Files fuer die Verarbeitung zu Daisy-Buechern
 - erzeugt die noetigen Dateien fuer eine Daisy-Struktur. 
 
-Zusatz-Modul benoetigt: 
+This program
+- makes copys of mp3-files from audiorecordings for daisy-production
+- builds the daisy-struckture for digital audio books in daisy 2.02 standard
+
+needs: 
 python-mutagen
 sudo apt-get install python-mutagen
 
-GUI aktualisieren mit:
+update qt-GUI by development:
 pyuic4 daisy_creator_mag.ui -o daisy_creator_mag_ui.py
 """ 
  
@@ -111,9 +115,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         
         fobj = open("README.md")
         for line in fobj:
-            #print line.rstrip()
             self.textEditHelp.append(line)
-        #set cursor on top of helpfile
+        # set cursor on top of helpfile
         cursor = self.textEditHelp.textCursor()
         cursor.movePosition(QtGui.QTextCursor.Start, QtGui.QTextCursor.MoveAnchor, 0)
         self.textEditHelp.setTextCursor(cursor)
@@ -277,9 +280,9 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                     self.showDebugMessage( fileToCopySource )
                     self.showDebugMessage( fileToCopyDest )
                     
-                    # Bitrate checken, eventuell aendern und gleich in Ziel neu encodieren
+                    # check bitrate, when necessary recode in new destination
                     isChangedAndCopy = self.checkChangeBitrateAndCopy( fileToCopySource,  fileToCopyDest )
-                    # nicht geaendert also kopieren
+                    # nothing to do, only copy
                     if  isChangedAndCopy is None: 
                         self.copyFile( fileToCopySource, fileToCopyDest)
                     
@@ -307,10 +310,10 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         if self.lineEditCopyFile2.text() != "Datei 2 waehlen":
             self.copyZusatzDatei( 2 )
         
-        # Metadaten laden
+        # load metadata
         self.lineEditMetaSource.setText(self.app_bhzPfadMeta + "/Daisy_Meta_" + self.comboBoxCopyBhz.currentText()  )
         self.metaLoadFile()
-        # Zielpfad als Quellpfad fuer Daisy eintragen
+        # enter path of source and destination 
         self.lineEditDaisySource.setText(self.lineEditCopyDest.text())
         
    
@@ -337,7 +340,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             with open( fileToCopySource ) as f: pass
         except IOError as e:
             self.showDebugMessage(  u"File not exists" )
-            #von QTString in String  umwandeln
+            # change from QTString to String
             self.textEdit.append("<font color='red'>Intro nicht vorhanden</font>: " + os.path.basename(str(fileToCopySource)))
             fileNotExist = "yes"
         
@@ -359,7 +362,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             with open( fileToCopySource ) as f: pass
         except IOError as e:
             self.showDebugMessage(  u"File not exists" )
-            #von QTString in String  umwandeln
+            # change from QTString to String
             self.textEdit.append("<font color='red'>Ausgabeansage nicht vorhanden</font>: " + os.path.basename(str(fileToCopySource)))
             fileNotExist = "yes"
         
@@ -380,9 +383,9 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         
         self.showDebugMessage( u"Bitrate check: " + filename)
         fileToCopyDest = str(self.lineEditCopyDest.text()) +"/"+ filename
-        # Bitrate checken, eventuell anedern und gleich an Ziel neu encodieren
+        # check bitrate, when necessary recode in new destination
         isChangedAndCopy = self.checkChangeBitrateAndCopy( patFilenameSource,  str(fileToCopyDest) )
-        # nicht geaendert also kopieren
+        # nothing to do, only copy
         if  isChangedAndCopy is None: 
             #shutil.copy( fileToCopySource, fileToCopyDest )
             self.copyFile( patFilenameSource, fileToCopyDest)
@@ -406,7 +409,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 self.textEdit.append("<b>ID3 vorhanden, aber NICHT entfernt bei</b>: " + fileToCopyDest)
     
     def checkChangeBitrateAndCopy(self,  fileToCopySource, fileToCopyDest):
-        """Bitrate aendern und an Ziel encodieren"""
+        """check bitrate, when necessary recode in new destination"""
         isChangedAndCopy = None
         audioSource = MP3( fileToCopySource )
         if audioSource.info.bitrate != int(self.comboBoxPrefBitrate.currentText())*1000:
@@ -427,7 +430,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
     def encodeFile(self, fileToCopySource, fileToCopyDest ):
         """encode mp3-file """
         self.showDebugMessage( u"encode_file" )
-        #damit die uebergabe der befehle richtig klappt muessen alle cmds im richtigen zeichensatz als strings encoded sein
+        # characterset of commands is importand
+        # encoding in the right manner
         c_lame_encoder = "/usr/bin/lame"
         self.showDebugMessage(  u"type c_lame_encoder" )
         self.showDebugMessage( type(c_lame_encoder) )
@@ -445,17 +449,17 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.showDebugMessage( u"returncode 1" )
         self.showDebugMessage( p[1] )
     
-        # erfolgsmeldung suchen, wenn nicht gefunden: -1
+        # search for success-message, when not found : -1
         n_encode_percent = string.find( p[1],  "(100%)" )
         n_encode_percent_1 = string.find( p[1],  "(99%)" )
         self.showDebugMessage( n_encode_percent )
         c_complete = "no"
     
-        # bei kurzen files kommt die 100% meldung nicht, deshalb auch 99% durchgehen lassen
+        # if the file is very short, no 100% message appear, then also accept 99% 
         if n_encode_percent == -1:
-            # 100% nicht erreicht
+            # no 100% 
             if n_encode_percent_1 != -1:
-                # aber 99
+                #  but 99
                 c_complete = "yes"
         else:
             c_complete = "yes"
@@ -483,7 +487,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         
         config = ConfigParser.RawConfigParser()
         
-        # Pfad von QTString in String  umwandeln
+        # change path from QTString to String
         config.read(str(self.lineEditMetaSource.text()))
         self.lineEditMetaProducer.setText(config.get('Daisy_Meta', 'Produzent'))
         self.lineEditMetaAutor.setText(config.get('Daisy_Meta', 'Autor'))
@@ -502,7 +506,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.showDialogCritical( errorMessage )
             return
         
-        # Audios einlesen
+        # read audiofiles
         try:
             dirItems = os.listdir( self.lineEditDaisySource.text())
         except Exception, e:
@@ -530,8 +534,9 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         lFileTime = lTimes[2]
         #print totalAudioLength
         totalTime = timedelta(seconds = totalAudioLength)
-        # umwandlung von timedelta in string: minuten und sekunden musten immer zweistllig sein, 
-        # damit einstellige stunde eine null bekommt :zfill(8)
+        # change from timedelta in to string
+        # hours, minits and seconds must have 2 digits (zfill(8))
+
         lTotalTime = str(totalTime).split(".")
         cTotalTime = lTotalTime[0].zfill(8)
         #str(cTotalTime[0]).zfill(8) 
@@ -564,9 +569,9 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
     
     def writeNCC(self, cTotalTime,  zMp3,  dirAudios):
         """write NCC-Page"""
-        # Ebene
+        # Levels
         maxEbene = "1"
-        # Max. Ebene ermitteln
+        # find max-level
         if self.checkBoxDaisyEbene.isChecked():
             for item in dirAudios:
                 self.showDebugMessage("Ebene: " +  item[5:6] )
@@ -637,27 +642,27 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 if z == 1:
                     fOutFile.write('<h1 class="title" id="cnt_0001"><a href="0001.smil#txt_0001">' + self.lineEditMetaAutor.text()+ ": " + self.lineEditMetaTitle.text() + '</a></h1>'+ '\r\n')
                     continue
-                # trennen
+                # splitting
                 itemSplit = self.splitFilename( item)
                 cTitle = self.extractTitle( itemSplit)
                 
                 # BHZ Specials
-                # Datum als Titel bei Bfh
+                # Date as title for "Bibel fuer heute"
                 if self.comboBoxCopyBhz.currentText() == "Bibel_fuer_heute":
                     if cTitle[2:4] == "00":
-                        # Monat - Jahr als Titel
+                        # Month as title
                         cTitleDate = cTitle[0:2]+" - "+ self.comboBoxCopyBhzAusg.currentText()[0:4]
                     else:
                         if re.match("\d{4,}",cTitle ) is not None:
-                            # Datum als Titel
+                            # Date as title
                             cTitleDate = cTitle[2:4]+"."+cTitle[0:2]+"."+ self.comboBoxCopyBhzAusg.currentText()[0:4]
                         else:
-                            # Titel unveraendert als Titel
+                            # Title unchanged
                             cTitleDate = cTitle                        
                 
                 # Ebenen
                 if self.checkBoxDaisyEbene.isChecked():
-                    # mehrere Ebenen, Ebene aus filename (Zahl nach erstem Unterstrich)
+                    # multible levels, extract level-no from digit in filename (1. digit after underline)
                     self.showDebugMessage( item[5:6] )
                     fOutFile.write('<h'+ item[5:6] +' id="cnt_'+str(z).zfill(4)+'"><a href="'+str(z).zfill(4)+'.smil#txt_'+str(z).zfill(4)+'">'+ cTitleDate + '</a></h' + item[5:6]+ '>'+ '\r\n')
                 else:
@@ -697,7 +702,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             z = 0
             for item in dirAudios:
                 z +=1
-                # trennen
+                # splitting
                 itemSplit = self.splitFilename( item)
                 cTitle = self.extractTitle( itemSplit)  
                 fOutFile.write('<ref src="'+str(z).zfill(4)+'.smil" title="' + cTitle + '" id="smil_' + str(z).zfill(4) + '"/>'+'\r\n')
@@ -721,7 +726,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 self.showDebugMessage( "I/O error({0}): {1}".format(errno, strerror) )
             else:
                 self.textEditDaisy.append( str(z).zfill(4) +u".smil - File schreiben")
-                # trennen
+                # splitting
                 itemSplit = self.splitFilename( item)
                 cTitle = self.extractTitle( itemSplit)  
                 
@@ -736,7 +741,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 self.showDebugMessage( splittedTtotalElapsedTime )
                 totalElapsedTimehhmmss = splittedTtotalElapsedTime[0].zfill(8)
                 if z == 1:
-                    # erster eintrag ergibt nur einen split
+                    # thirst item results in only one split
                     totalElapsedTimeMilliMicro = "000"
                 else:
                     totalElapsedTimeMilliMicro = splittedTtotalElapsedTime[1][0:3] 
@@ -748,7 +753,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 self.showDebugMessage(u"filetime: " + str(fileTime))
                 splittedFileTime = str(fileTime).split(".")
                 FileTimehhmmss = splittedFileTime[0].zfill(8)
-                # wenn keine Millisicrosec gibts nur ein Element in der Liste
+                # it's only one item in list when no milliseconds
                 if len(splittedFileTime) >1:
                     if len(splittedFileTime[1]) >= 3:
                         fileTimeMilliMicro = splittedFileTime[1][0:3] 
@@ -807,9 +812,9 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
     
     def extractTitle(self, itemSplit):
         """extract title """
-        # letzter teil
+        # last piece
         itemLeft = itemSplit[len(itemSplit)-1]
-        # davon file-ext abtrennen
+        # now split file-extention
         itemTitle = itemLeft.split(".mp3")
         cTitle = re.sub ("_", " ", itemTitle[0]  ) 
         return cTitle
@@ -836,7 +841,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         # Bhz in Combo
         for item in self.app_bhzItems:
             self.comboBoxCopyBhz.addItem(item)
-        # Ausgabe in Comboncc:maxPageNormal
+        # Combi-items: numbers according to years
         prevYear = str( datetime.datetime.now().year -1 )
         currentYear = str( datetime.datetime.now().year )
         nextYear = str( datetime.datetime.now().year +1 )
@@ -846,7 +851,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.comboBoxCopyBhzAusg.addItem(currentYear + "_" + item)
         for item in self.app_nextAusgItems:
             self.comboBoxCopyBhzAusg.addItem(nextYear + "_" + item)
-        # Trenner in Combo
+        # Combo-items: string for splitting author and title in filenames
         self.comboBoxDaisyTrenner.addItem("Ausgabe-Nr.")
         self.comboBoxDaisyTrenner.addItem(prevYear)
         self.comboBoxDaisyTrenner.addItem(currentYear)
@@ -857,7 +862,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.comboBoxPrefBitrate.addItem("64")
         self.comboBoxPrefBitrate.addItem("96")
         self.comboBoxPrefBitrate.addItem("128")
-        # Vorbelegung Checkboxen
+        # defaults for checkboxes
         self.checkBoxCopyBhzIntro.setChecked(True)
         self.checkBoxCopyBhzAusgAnsage.setChecked(True)
         self.checkBoxCopyID3Change.setChecked(True)
