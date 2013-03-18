@@ -831,12 +831,25 @@
          <rect>
           <x>30</x>
           <y>200</y>
-          <width>301</width>
+          <width>601</width>
           <height>22</height>
          </rect>
         </property>
         <property name="text">
          <string>Ebenen aus Dateinamen ermitteln</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBoxDaisyDateCalendar">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>230</y>
+          <width>601</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Datum aus Dateinamen ermitteln (z.B. fuer Kalender)</string>
         </property>
        </widget>
       </widget>

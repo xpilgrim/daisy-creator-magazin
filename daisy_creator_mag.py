@@ -22,7 +22,9 @@ sudo apt-get install python-mutagen
 update qt-GUI by development:
 pyuic4 daisy_creator_mag.ui -o daisy_creator_mag_ui.py
 """ 
- 
+
+# TODO: Ebenen umbenennen: level
+
 from PyQt4 import QtGui, QtCore
 import sys
 import os
@@ -329,7 +331,9 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
     def copyIntro(self):
         """copy Intro"""
         fileToCopySource = self.app_bhzPfadIntro + "/Intro_" +  self.comboBoxCopyBhz.currentText()  + ".mp3"
-        if self.comboBoxCopyBhz.currentText() == "Bibel_fuer_heute":
+        #if self.comboBoxCopyBhz.currentText() == "Bibel_fuer_heute":
+        if self.checkBoxDaisyEbene.isChecked():
+            # include level in filename
             fileToCopyDest = self.lineEditCopyDest.text() + "/0010_1_" +  self.comboBoxCopyBhz.currentText() + "_" + self.comboBoxCopyBhzAusg.currentText() + "_Intro.mp3"
         else:
             fileToCopyDest = self.lineEditCopyDest.text() + "/0010_" +  self.comboBoxCopyBhz.currentText() + "_" + self.comboBoxCopyBhzAusg.currentText() + "_Intro.mp3"
@@ -647,8 +651,9 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 cTitle = self.extractTitle( itemSplit)
                 
                 # BHZ Specials
-                # Date as title for "Bibel fuer heute"
-                if self.comboBoxCopyBhz.currentText() == "Bibel_fuer_heute":
+                # Date as title for Calendars like "Bibel fuer heute"
+                #if self.comboBoxCopyBhz.currentText() == "Bibel_fuer_heute":
+                if self.checkBoxDaisyDateCalendar.isChecked():
                     if cTitle[2:4] == "00":
                         # Month as title
                         cTitleDate = cTitle[0:2]+" - "+ self.comboBoxCopyBhzAusg.currentText()[0:4]

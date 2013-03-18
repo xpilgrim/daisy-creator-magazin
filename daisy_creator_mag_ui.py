@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'daisy_creator_mag.ui'
 #
-# Created: Mon Nov 12 21:11:14 2012
+# Created: Mon Mar 18 11:47:20 2013
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -285,9 +285,13 @@ class Ui_DaisyMain(object):
         self.pushButtonClose2.setText(QtGui.QApplication.translate("DaisyMain", "Quit", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButtonClose2.setObjectName(_fromUtf8("pushButtonClose2"))
         self.checkBoxDaisyEbene = QtGui.QCheckBox(self.tab_2)
-        self.checkBoxDaisyEbene.setGeometry(QtCore.QRect(30, 200, 301, 22))
+        self.checkBoxDaisyEbene.setGeometry(QtCore.QRect(30, 200, 601, 22))
         self.checkBoxDaisyEbene.setText(QtGui.QApplication.translate("DaisyMain", "Ebenen aus Dateinamen ermitteln", None, QtGui.QApplication.UnicodeUTF8))
         self.checkBoxDaisyEbene.setObjectName(_fromUtf8("checkBoxDaisyEbene"))
+        self.checkBoxDaisyDateCalendar = QtGui.QCheckBox(self.tab_2)
+        self.checkBoxDaisyDateCalendar.setGeometry(QtCore.QRect(30, 230, 601, 22))
+        self.checkBoxDaisyDateCalendar.setText(QtGui.QApplication.translate("DaisyMain", "Datum aus Dateinamen ermitteln (z.B. fuer Kalender)", None, QtGui.QApplication.UnicodeUTF8))
+        self.checkBoxDaisyDateCalendar.setObjectName(_fromUtf8("checkBoxDaisyDateCalendar"))
         self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
         self.tab_4 = QtGui.QWidget()
         self.tab_4.setObjectName(_fromUtf8("tab_4"))
