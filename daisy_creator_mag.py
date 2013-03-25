@@ -23,7 +23,6 @@ update qt-GUI by development:
 pyuic4 daisy_creator_mag.ui -o daisy_creator_mag_ui.py
 """ 
 
-# TODO: Ebenen umbenennen: level
 
 from PyQt4 import QtGui, QtCore
 import sys
@@ -332,7 +331,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         """copy Intro"""
         fileToCopySource = self.app_bhzPfadIntro + "/Intro_" +  self.comboBoxCopyBhz.currentText()  + ".mp3"
         #if self.comboBoxCopyBhz.currentText() == "Bibel_fuer_heute":
-        if self.checkBoxDaisyEbene.isChecked():
+        if self.checkBoxDaisyLevel.isChecked():
             # include level in filename
             fileToCopyDest = self.lineEditCopyDest.text() + "/0010_1_" +  self.comboBoxCopyBhz.currentText() + "_" + self.comboBoxCopyBhzAusg.currentText() + "_Intro.mp3"
         else:
@@ -574,14 +573,14 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
     def writeNCC(self, cTotalTime,  zMp3,  dirAudios):
         """write NCC-Page"""
         # Levels
-        maxEbene = "1"
+        maxLevel = "1"
         # find max-level
-        if self.checkBoxDaisyEbene.isChecked():
+        if self.checkBoxDaisyLevel.isChecked():
             for item in dirAudios:
-                self.showDebugMessage("Ebene: " +  item[5:6] )
+                self.showDebugMessage("Level: " +  item[5:6] )
                 if re.match("\d{1,}",item[5:6] ) is not None:
-                    if  item[5:6] > maxEbene:
-                        maxEbene = item[5:6]
+                    if  item[5:6] > maxLevel:
+                        maxLevel = item[5:6]
         
         try:
             fOutFile = open( os.path.join( str(self.lineEditDaisySource.text()), "ncc.html")  , 'w')
@@ -611,7 +610,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             fOutFile.write( '<meta name="ncc:sidebars" content="0"/>'+ '\r\n')
             fOutFile.write( '<meta name="ncc:prodNotes" content="0"/>'+ '\r\n')
             fOutFile.write( '<meta name="ncc:footnotes" content="0"/>'+ '\r\n')
-            fOutFile.write( '<meta name="ncc:depth" content="' + maxEbene + '"/>'+ '\r\n')
+            fOutFile.write( '<meta name="ncc:depth" content="' + maxLevel + '"/>'+ '\r\n')
             fOutFile.write( '<meta name="ncc:maxPageNormal" content="0"/>'+ '\r\n')
             fOutFile.write( '<meta name="ncc:charset" content="utf-8"/>'+ '\r\n')
             fOutFile.write( '<meta name="ncc:multimediaType" content="audioNcc"/>'+ '\r\n')
@@ -665,8 +664,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                             # Title unchanged
                             cTitleDate = cTitle                        
                 
-                # Ebenen
-                if self.checkBoxDaisyEbene.isChecked():
+                # Levels
+                if self.checkBoxDaisyLevel.isChecked():
                     # multible levels, extract level-no from digit in filename (1. digit after underline)
                     self.showDebugMessage( item[5:6] )
                     fOutFile.write('<h'+ item[5:6] +' id="cnt_'+str(z).zfill(4)+'"><a href="'+str(z).zfill(4)+'.smil#txt_'+str(z).zfill(4)+'">'+ cTitleDate + '</a></h' + item[5:6]+ '>'+ '\r\n')

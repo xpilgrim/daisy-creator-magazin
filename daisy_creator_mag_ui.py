@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'daisy_creator_mag.ui'
 #
-# Created: Mon Mar 18 11:47:20 2013
+# Created: Mon Mar 25 20:36:04 2013
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -284,10 +284,10 @@ class Ui_DaisyMain(object):
         self.pushButtonClose2.setGeometry(QtCore.QRect(640, 640, 111, 27))
         self.pushButtonClose2.setText(QtGui.QApplication.translate("DaisyMain", "Quit", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButtonClose2.setObjectName(_fromUtf8("pushButtonClose2"))
-        self.checkBoxDaisyEbene = QtGui.QCheckBox(self.tab_2)
-        self.checkBoxDaisyEbene.setGeometry(QtCore.QRect(30, 200, 601, 22))
-        self.checkBoxDaisyEbene.setText(QtGui.QApplication.translate("DaisyMain", "Ebenen aus Dateinamen ermitteln", None, QtGui.QApplication.UnicodeUTF8))
-        self.checkBoxDaisyEbene.setObjectName(_fromUtf8("checkBoxDaisyEbene"))
+        self.checkBoxDaisyLevel = QtGui.QCheckBox(self.tab_2)
+        self.checkBoxDaisyLevel.setGeometry(QtCore.QRect(30, 200, 601, 22))
+        self.checkBoxDaisyLevel.setText(QtGui.QApplication.translate("DaisyMain", "Ebenen aus Dateinamen ermitteln", None, QtGui.QApplication.UnicodeUTF8))
+        self.checkBoxDaisyLevel.setObjectName(_fromUtf8("checkBoxDaisyLevel"))
         self.checkBoxDaisyDateCalendar = QtGui.QCheckBox(self.tab_2)
         self.checkBoxDaisyDateCalendar.setGeometry(QtCore.QRect(30, 230, 601, 22))
         self.checkBoxDaisyDateCalendar.setText(QtGui.QApplication.translate("DaisyMain", "Datum aus Dateinamen ermitteln (z.B. fuer Kalender)", None, QtGui.QApplication.UnicodeUTF8))

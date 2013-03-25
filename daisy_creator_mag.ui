@@ -826,7 +826,7 @@
          <string>Quit</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="checkBoxDaisyEbene">
+       <widget class="QCheckBox" name="checkBoxDaisyLevel">
         <property name="geometry">
          <rect>
           <x>30</x>
