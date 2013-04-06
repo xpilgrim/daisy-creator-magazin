@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# pylint: disable-msg=C0103
 
 """
 Autor: Joerg Sorge
@@ -58,7 +59,10 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.app_debugMod = "yes"
         self.app_bhzItems = ["Zeitschrift"]        
         self.app_prevAusgItems = ["10",  "11",  "12",  "22",  "23",  "24"]
-        self.app_currentAusgItems = ["I", "II", "III", "IV", "01", "02", "03",  "04",  "05",  "06",  "07",  "08",  "09",  "10",  "11",  "12",  "13",  "14",  "15",  "16",  "17",  "18",  "19",  "20",  "21",  "22",  "23",  "24"]
+        self.app_currentAusgItems = ["I", "II", "III", "IV", "01", "02", 
+            "03",  "04",  "05",  "06",  "07",  "08",  "09",  "10",  "11",  
+            "12",  "13",  "14",  "15",  "16",  "17",  "18",  "19",  "20",  
+            "21",  "22",  "23",  "24"]
         self.app_nextAusgItems = ["I", "II", "01",  "02",  "03"]
         self.app_bhzPfad = QtCore.QDir.homePath() 
         self.app_bhzPfadMeta = QtCore.QDir.homePath() 
@@ -87,7 +91,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             with open( "daisy_creator_mag.config" ) as f: pass
         except IOError as e:
             self.showDebugMessage(  u"File not exists" )
-            self.textEdit.append("<b>Config-Datei konnte nicht geladen werden...</b>")   
+            self.textEdit.append("<b>Config-Datei konnte nicht geladen werden...</b>") 
             fileNotExist = "yes"
         
         if  fileNotExist is not None:
@@ -263,13 +267,23 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 
                 if  fileNotExist is None:
                     # Bhz-Name dran
-                    fileToCopyDest = self.lineEditCopyDest.text() + "/" + item[ 0:len(item)-4 ] + "_" + self.comboBoxCopyBhz.currentText() + "_" + self.comboBoxCopyBhzAusg.currentText() + "_" + item[ 0:len(item)-4 ] + ".mp3"
+                    fileToCopyDest = ( self.lineEditCopyDest.text() + "/" 
+                        + item[ 0:len(item)-4 ] + "_" 
+                        + self.comboBoxCopyBhz.currentText() 
+                        + "_" + self.comboBoxCopyBhzAusg.currentText() 
+                        + "_" + item[ 0:len(item)-4 ] + ".mp3" )
 
                     if self.checkBoxCopyChangeNr1001.isChecked():
-                        # 1000.mp3 in 0100 umbenennen damit die Ansage weiter vorn einsortiert wird
+                        # rename 1000.mp3 in 0100 umbenennen 
+                        # to further sort front
                         if item[0:4] == "1001":
-                            fileToCopyDest = self.lineEditCopyDest.text() + "/0100_" + self.comboBoxCopyBhz.currentText() + "_" + self.comboBoxCopyBhzAusg.currentText() + "_" + item[ 0:len(item)-4 ] + ".mp3"
-                            self.textEdit.append(u"<b>1000.mp3 in 0100 umbenannt damit die Ansage weiter vorn einsortiert wird</b>")
+                            fileToCopyDest = (self.lineEditCopyDest.text() 
+                                              + "/0100_" + self.comboBoxCopyBhz.currentText() 
+                                              + "_" + self.comboBoxCopyBhzAusg.currentText() 
+                                              + "_" + item[ 0:len(item)-4 ] 
+                                              + ".mp3" )
+                            self.textEdit.append(u"<b>1000.mp3 in 0100 umbenannt "
+                                "damit die Ansage weiter vorn einsortiert wird</b>")
                     
                     if self.checkBoxCopyChangeNr1000.isChecked():
                         # 1000.mp3 in 0100 umbenennen damit die Ansage weiter vorn einsortiert wird
@@ -288,7 +302,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                         self.copyFile( fileToCopySource, fileToCopyDest)
                     
                     self.checkCangeId3( fileToCopyDest)
-                    z +=1
+                    z += 1
                     self.showDebugMessage( z )
                     self.showDebugMessage( zList )
                     pZ = z *100 / zList 
@@ -421,7 +435,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.textEdit.append( u"<b>Bitrate folgender Datei entspricht nicht der Vorgabe:</b> " + str(audioSource.info.bitrate/1000) + " " + fileToCopySource)
             
             if self.checkBoxCopyBitrateChange.isChecked():
-                self.textEdit.append(u"<b>Bitrate aendern bei</b>: " + fileToCopyDest)
+                self.textEdit.append(u"<b>Bitrate aendern bei</b>: " 
+                                     + fileToCopyDest)
                 isEncoded = self.encodeFile( fileToCopySource, fileToCopyDest )
                 if isEncoded is not None:
                     self.textEdit.append(u"<b>Bitrate geaendert bei</b>: " + fileToCopyDest)
@@ -875,7 +890,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.readHelp()
         self.show()
  
-if __name__=='__main__':
+if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     dyc = DaisyCopy()
     dyc.main()
