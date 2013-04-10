@@ -266,12 +266,20 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 self.showDebugMessage( fileToCopySource )
                 
                 if  fileNotExist is None:
-                    # Bhz-Name dran
-                    fileToCopyDest = ( self.lineEditCopyDest.text() + "/" 
-                        + item[ 0:len(item)-4 ] + "_" 
-                        + self.comboBoxCopyBhz.currentText() 
-                        + "_" + self.comboBoxCopyBhzAusg.currentText() 
-                        + "_" + item[ 0:len(item)-4 ] + ".mp3" )
+                    # cange filenames
+                    if self.checkBoxDaisyIgnoreTitleDigits.isChecked():
+                        fileToCopyDest = ( self.lineEditCopyDest.text() + "/" 
+                            + item[ 0:4 ] + "_" 
+                            + self.comboBoxCopyBhz.currentText() 
+                            + "_" + self.comboBoxCopyBhzAusg.currentText() 
+                            + "_" + item[ 5:len(item)-4] + ".mp3" )    
+                    else:
+                        fileToCopyDest = ( self.lineEditCopyDest.text() + "/" 
+                            + item[ 0:len(item)-4 ] + "_" 
+                            + self.comboBoxCopyBhz.currentText() 
+                            + "_" + self.comboBoxCopyBhzAusg.currentText() 
+                            + "_" + item[ 0:len(item)-4 ] + ".mp3" )
+                    
 
                     if self.checkBoxCopyChangeNr1001.isChecked():
                         # rename 1000.mp3 in 0100 umbenennen 

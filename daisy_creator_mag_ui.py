@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'daisy_creator_mag.ui'
 #
-# Created: Mon Mar 25 20:36:04 2013
+# Created: Wed Apr 10 16:13:43 2013
 #      by: PyQt4 UI code generator 4.8.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -292,6 +292,10 @@ class Ui_DaisyMain(object):
         self.checkBoxDaisyDateCalendar.setGeometry(QtCore.QRect(30, 230, 601, 22))
         self.checkBoxDaisyDateCalendar.setText(QtGui.QApplication.translate("DaisyMain", "Datum aus Dateinamen ermitteln (z.B. fuer Kalender)", None, QtGui.QApplication.UnicodeUTF8))
         self.checkBoxDaisyDateCalendar.setObjectName(_fromUtf8("checkBoxDaisyDateCalendar"))
+        self.checkBoxDaisyIgnoreTitleDigits = QtGui.QCheckBox(self.tab_2)
+        self.checkBoxDaisyIgnoreTitleDigits.setGeometry(QtCore.QRect(30, 260, 601, 22))
+        self.checkBoxDaisyIgnoreTitleDigits.setText(QtGui.QApplication.translate("DaisyMain", "Fuehrende Ziffern aus Dateinamen fuer Titel ignorieren (vor dem Kopieren einstellen!)", None, QtGui.QApplication.UnicodeUTF8))
+        self.checkBoxDaisyIgnoreTitleDigits.setObjectName(_fromUtf8("checkBoxDaisyIgnoreTitleDigits"))
         self.tabWidget.addTab(self.tab_2, _fromUtf8(""))
         self.tab_4 = QtGui.QWidget()
         self.tab_4.setObjectName(_fromUtf8("tab_4"))

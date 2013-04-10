@@ -852,6 +852,19 @@
          <string>Datum aus Dateinamen ermitteln (z.B. fuer Kalender)</string>
         </property>
        </widget>
+       <widget class="QCheckBox" name="checkBoxDaisyIgnoreTitleDigits">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>260</y>
+          <width>601</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Fuehrende Ziffern aus Dateinamen fuer Titel ignorieren (vor dem Kopieren einstellen!)</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_4">
        <attribute name="title">
