@@ -24,6 +24,7 @@ update qt-GUI by development:
 pyuic4 daisy_creator_mag.ui -o daisy_creator_mag_ui.py
 """ 
 
+#TODO: Weiter mit pylint --disable=W0402 --const-rgx='[a-z_A-Z][a-z0-9_]{2,30}$' daisy_creator_mag.py
 
 from PyQt4 import QtGui, QtCore
 import sys
@@ -33,7 +34,7 @@ import datetime
 from datetime import timedelta
 import ntpath
 import subprocess
-import types
+#import types
 import string
 import re
 from mutagen.mp3 import MP3
@@ -91,7 +92,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             with open( "daisy_creator_mag.config" ) as f: pass
         except IOError as e:
             self.showDebugMessage(  u"File not exists" )
-            self.textEdit.append("<b>Config-Datei konnte nicht geladen werden...</b>") 
+            self.textEdit.append(
+                "<b>Config-Datei konnte nicht geladen werden...</b>") 
             fileNotExist = "yes"
         
         if  fileNotExist is not None:
@@ -551,7 +553,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             if item[ len(item)-4:len(item) ] == ".MP3" or item[ len(item)-4:len(item) ] == ".mp3":
                 dirAudios.append(item) 
                 self.textEditDaisy.append(item)
-                zMp3 +=1
+                zMp3 += 1
 
         #totalAudioLength = self.calcAudioLengt(dirAudios)
         lTimes = self.calcAudioLengt(dirAudios)
@@ -576,7 +578,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
     
     def calcAudioLengt(self,  dirAudios):
         """calc total length"""
-        totalAudioLength =0
+        totalAudioLength = 0
         lTotalElapsedTime = []
         lTotalElapsedTime.append(0)
         lFileTime = []
@@ -601,7 +603,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         if self.checkBoxDaisyLevel.isChecked():
             for item in dirAudios:
                 self.showDebugMessage("Level: " +  item[5:6] )
-                if re.match("\d{1,}",item[5:6] ) is not None:
+                if re.match("\d{1,}", item[5:6] ) is not None:
                     if  item[5:6] > maxLevel:
                         maxLevel = item[5:6]
         
@@ -664,7 +666,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             fOutFile.write( '<body>'+ '\r\n')
             z = 0
             for item in dirAudios:
-                z +=1
+                z += 1
                 if z == 1:
                     fOutFile.write('<h1 class="title" id="cnt_0001"><a href="0001.smil#txt_0001">' + self.lineEditMetaAutor.text()+ ": " + self.lineEditMetaTitle.text() + '</a></h1>'+ '\r\n')
                     continue
@@ -680,7 +682,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                         # Month as title
                         cTitleDate = cTitle[0:2]+" - "+ self.comboBoxCopyBhzAusg.currentText()[0:4]
                     else:
-                        if re.match("\d{4,}",cTitle ) is not None:
+                        if re.match("\d{4,}", cTitle ) is not None:
                             # Date as title
                             cTitleDate = cTitle[2:4]+"."+cTitle[0:2]+"."+ self.comboBoxCopyBhzAusg.currentText()[0:4]
                         else:
@@ -728,7 +730,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             #fOutFile.write( '<ref src="0001.smil" title="'+ self.lineEditMetaTitle.text() + '" id="smil_0001"/>'+'\r\n')            
             z = 0
             for item in dirAudios:
-                z +=1
+                z += 1
                 # splitting
                 itemSplit = self.splitFilename( item)
                 cTitle = self.extractTitle( itemSplit)  
@@ -744,7 +746,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.textEditDaisy.append(u"<b>smil-Dateien schreiben...</b> ")
         z = 0
         for item in dirAudios:
-            z +=1
+            z += 1
             
             try:
                 filename = str(z).zfill(4) +'.smil'
@@ -811,13 +813,17 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                     fOutFile.write( '<audio src="' + item + '" clip-begin="npt=0.000s" clip-end="npt=' + lFileTimeSeconds[0] + '.' + fileTimeMilliMicro + 's" id="a_' + str(z).zfill(4)  + '" />'+'\r\n')
                 else:
                     fOutFile.write( '<audio src="' + item + '" clip-begin="npt=0.000s" clip-end="npt=' + str(15) + '.' + fileTimeMilliMicro + 's" id="a_' + str(z).zfill(4)  + '" />'+'\r\n')
-                    zz=z+1
+                    zz = z+ 1
                     phraseSeconds = 15
                     while phraseSeconds <= lFileTime[z-1]-15:
-                        fOutFile.write( '<audio src="' + item + '" clip-begin="npt='+ str(phraseSeconds)+ '.' + fileTimeMilliMicro + 's" clip-end="npt=' + str(phraseSeconds+15) + '.' + fileTimeMilliMicro + 's" id="a_' + str(zz).zfill(4)  + '" />'+'\r\n')
-                        phraseSeconds +=15
-                        zz +=1
-                    fOutFile.write( '<audio src="' + item + '" clip-begin="npt='+ str(phraseSeconds)+ '.' + fileTimeMilliMicro + 's" clip-end="npt=' + lFileTimeSeconds[0] + '.' + fileTimeMilliMicro + 's" id="a_' + str(zz).zfill(4)  + '" />'+'\r\n')
+                        fOutFile.write( '<audio src="' + item + '" clip-begin="npt='+ str(phraseSeconds)+ '.' + fileTimeMilliMicro + 's" clip-end="npt=' + str(phraseSeconds+ 15) + '.' + fileTimeMilliMicro + 's" id="a_' + str(zz).zfill(4)  + '" />'+'\r\n')
+                        phraseSeconds += 15
+                        zz += 1
+                    fOutFile.write( '<audio src="' + item 
+                        + '" clip-begin="npt='+ str(phraseSeconds)+ '.' 
+                        + fileTimeMilliMicro + 's" clip-end="npt=' 
+                        + lFileTimeSeconds[0] + '.' + fileTimeMilliMicro 
+                        + 's" id="a_' + str(zz).zfill(4)  + '" />'+'\r\n')
                 
                 fOutFile.write( '</seq>'+'\r\n')
                 fOutFile.write( '</par>'+'\r\n')
