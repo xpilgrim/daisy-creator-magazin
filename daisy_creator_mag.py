@@ -802,21 +802,32 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 fOutFile.write( '</layout>'+'\r\n')
                 fOutFile.write( '</head>'+'\r\n')
                 fOutFile.write( '<body>'+'\r\n')
-                #fOutFile.write( '<seq dur="' + FileTimehhmmss + '.' + fileTimeMilliMicro + 's">'+'\r\n')
                 lFileTimeSeconds = str(lFileTime[z-1]).split(".")
                 
-                fOutFile.write( '<seq dur="' + lFileTimeSeconds[0] + '.' + fileTimeMilliMicro  +'s">'+'\r\n')
+                fOutFile.write( '<seq dur="' + lFileTimeSeconds[0] + '.' 
+                    + fileTimeMilliMicro  +'s">' + '\r\n')
                 fOutFile.write( '<par endsync="last">'+'\r\n')
-                fOutFile.write( '<text src="ncc.html#cnt_' + str(z).zfill(4) + '" id="txt_' + str(z).zfill(4) + '" />'+'\r\n')
+                fOutFile.write( '<text src="ncc.html#cnt_' + str(z).zfill(4) 
+                    + '" id="txt_' + str(z).zfill(4) + '" />'+'\r\n')
                 fOutFile.write( '<seq>'+'\r\n')
                 if fileTime < timedelta(seconds=45):
-                    fOutFile.write( '<audio src="' + item + '" clip-begin="npt=0.000s" clip-end="npt=' + lFileTimeSeconds[0] + '.' + fileTimeMilliMicro + 's" id="a_' + str(z).zfill(4)  + '" />'+'\r\n')
+                    fOutFile.write( '<audio src="' + item 
+                        + '" clip-begin="npt=0.000s" clip-end="npt=' 
+                        + lFileTimeSeconds[0] + '.' + fileTimeMilliMicro 
+                        + 's" id="a_' + str(z).zfill(4)  + '" />'+'\r\n')
                 else:
-                    fOutFile.write( '<audio src="' + item + '" clip-begin="npt=0.000s" clip-end="npt=' + str(15) + '.' + fileTimeMilliMicro + 's" id="a_' + str(z).zfill(4)  + '" />'+'\r\n')
+                    fOutFile.write( '<audio src="' + item 
+                        + '" clip-begin="npt=0.000s" clip-end="npt=' 
+                        + str(15) + '.' + fileTimeMilliMicro + 's" id="a_' 
+                        + str(z).zfill(4)  + '" />'+'\r\n')
                     zz = z+ 1
                     phraseSeconds = 15
                     while phraseSeconds <= lFileTime[z-1]-15:
-                        fOutFile.write( '<audio src="' + item + '" clip-begin="npt='+ str(phraseSeconds)+ '.' + fileTimeMilliMicro + 's" clip-end="npt=' + str(phraseSeconds+ 15) + '.' + fileTimeMilliMicro + 's" id="a_' + str(zz).zfill(4)  + '" />'+'\r\n')
+                        fOutFile.write( '<audio src="' + item 
+                            + '" clip-begin="npt='+ str(phraseSeconds)+ '.' 
+                            + fileTimeMilliMicro + 's" clip-end="npt=' 
+                            + str(phraseSeconds+ 15) + '.' + fileTimeMilliMicro 
+                            + 's" id="a_' + str(zz).zfill(4)  + '" />'+'\r\n')
                         phraseSeconds += 15
                         zz += 1
                     fOutFile.write( '<audio src="' + item 
