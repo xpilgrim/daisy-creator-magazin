@@ -25,6 +25,7 @@ pyuic4 daisy_creator_mag.ui -o daisy_creator_mag_ui.py
 """ 
 
 #TODO: Weiter mit pylint --disable=W0402 --const-rgx='[a-z_A-Z][a-z0-9_]{2,30}$' daisy_creator_mag.py
+#TODO:  try exept in write ncc wie in write smil korrigieren
 
 from PyQt4 import QtGui, QtCore
 import sys
@@ -753,96 +754,98 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 fOutFile = open( os.path.join( str(self.lineEditDaisySource.text()), filename  ) , 'w')
             except IOError as (errno, strerror):
                 self.showDebugMessage( "I/O error({0}): {1}".format(errno, strerror) )
+                return
+            #else:
+            self.textEditDaisy.append( str(z).zfill(4) +u".smil - File schreiben")
+            # splitting
+            itemSplit = self.splitFilename( item)
+            cTitle = self.extractTitle( itemSplit)  
+                
+            fOutFile.write( '<?xml version="1.0" encoding="utf-8"?>'+ '\r\n' )
+            fOutFile.write( '<!DOCTYPE smil PUBLIC "-//W3C//DTD SMIL 1.0//EN" "http://www.w3.org/TR/REC-smil/SMIL10.dtd">'+'\r\n')
+            fOutFile.write( '<smil>'+'\r\n')
+            fOutFile.write( '<head>'+'\r\n')
+            fOutFile.write( '<meta name="ncc:generator" content="KOM-IN-DaisyCreator"/>'+'\r\n')
+            totalElapsedTime = timedelta(seconds = lTotalElapsedTime[z-1])
+            splittedTtotalElapsedTime = str(totalElapsedTime).split(".")
+            self.showDebugMessage( u"splittedTtotalElapsedTime: ")
+            self.showDebugMessage( splittedTtotalElapsedTime )
+            totalElapsedTimehhmmss = splittedTtotalElapsedTime[0].zfill(8)
+            if z == 1:
+                # thirst item results in only one split
+                totalElapsedTimeMilliMicro = "000"
             else:
-                self.textEditDaisy.append( str(z).zfill(4) +u".smil - File schreiben")
-                # splitting
-                itemSplit = self.splitFilename( item)
-                cTitle = self.extractTitle( itemSplit)  
+                totalElapsedTimeMilliMicro = splittedTtotalElapsedTime[1][0:3] 
+            fOutFile.write( '<meta name="ncc:totalElapsedTime" content="' 
+                    + totalElapsedTimehhmmss + "." 
+                    + totalElapsedTimeMilliMicro +'"/>'+'\r\n')
                 
-                fOutFile.write( '<?xml version="1.0" encoding="utf-8"?>'+ '\r\n' )
-                fOutFile.write( '<!DOCTYPE smil PUBLIC "-//W3C//DTD SMIL 1.0//EN" "http://www.w3.org/TR/REC-smil/SMIL10.dtd">'+'\r\n')
-                fOutFile.write( '<smil>'+'\r\n')
-                fOutFile.write( '<head>'+'\r\n')
-                fOutFile.write( '<meta name="ncc:generator" content="KOM-IN-DaisyCreator"/>'+'\r\n')
-                totalElapsedTime = timedelta(seconds = lTotalElapsedTime[z-1])
-                splittedTtotalElapsedTime = str(totalElapsedTime).split(".")
-                self.showDebugMessage( u"splittedTtotalElapsedTime: ")
-                self.showDebugMessage( splittedTtotalElapsedTime )
-                totalElapsedTimehhmmss = splittedTtotalElapsedTime[0].zfill(8)
-                if z == 1:
-                    # thirst item results in only one split
-                    totalElapsedTimeMilliMicro = "000"
-                else:
-                    totalElapsedTimeMilliMicro = splittedTtotalElapsedTime[1][0:3] 
-                #fOutFile.write( '<meta name="ncc:totalElapsedTime" content="' + str(lTotalElapsedTime[z-1] )+ '"/>')
-                #fOutFile.write( '<meta name="ncc:totalElapsedTime" content="' + str( totalElapsedTime )+ '"/>'+'\r\n')
-                fOutFile.write( '<meta name="ncc:totalElapsedTime" content="' +totalElapsedTimehhmmss + "." + totalElapsedTimeMilliMicro +'"/>'+'\r\n')
+            fileTime = timedelta(seconds = lFileTime[z-1])
+            self.showDebugMessage(u"filetime: " + str(fileTime))
+            splittedFileTime = str(fileTime).split(".")
+            FileTimehhmmss = splittedFileTime[0].zfill(8)
+            # it's only one item in list when no milliseconds
+            if len(splittedFileTime) >1:
+                if len(splittedFileTime[1]) >= 3:
+                    fileTimeMilliMicro = splittedFileTime[1][0:3] 
+                elif len(splittedFileTime[1]) == 2:
+                    fileTimeMilliMicro = splittedFileTime[1][0:2] 
+            else:
+                fileTimeMilliMicro = "000"
                 
-                fileTime = timedelta(seconds = lFileTime[z-1])
-                self.showDebugMessage(u"filetime: " + str(fileTime))
-                splittedFileTime = str(fileTime).split(".")
-                FileTimehhmmss = splittedFileTime[0].zfill(8)
-                # it's only one item in list when no milliseconds
-                if len(splittedFileTime) >1:
-                    if len(splittedFileTime[1]) >= 3:
-                        fileTimeMilliMicro = splittedFileTime[1][0:3] 
-                    elif len(splittedFileTime[1]) == 2:
-                        fileTimeMilliMicro = splittedFileTime[1][0:2] 
-                else:
-                    fileTimeMilliMicro = "000"
+            fOutFile.write( '<meta name="ncc:timeInThisSmil" content="' 
+                    + FileTimehhmmss + "." + fileTimeMilliMicro +'" />'+'\r\n')
+            fOutFile.write( '<meta name="dc:format" content="Daisy 2.02"/>'+'\r\n')
+            fOutFile.write( '<meta name="dc:identifier" content="' 
+                    + self.lineEditMetaRefOrig.text() + '"/>'+'\r\n')
+            fOutFile.write( '<meta name="dc:title" content="' +  cTitle  
+                    + '"/>'+'\r\n')
+            fOutFile.write( '<layout>'+'\r\n')
+            fOutFile.write( '<region id="txt-view"/>'+'\r\n')
+            fOutFile.write( '</layout>'+'\r\n')
+            fOutFile.write( '</head>'+'\r\n')
+            fOutFile.write( '<body>'+'\r\n')
+            lFileTimeSeconds = str(lFileTime[z-1]).split(".")
                 
-                #fOutFile.write( '<meta name="ncc:timeInThisSmil" content="' + str(lFileTime[z-1]) + '" />'+'\r\n')
-
-                fOutFile.write( '<meta name="ncc:timeInThisSmil" content="' + FileTimehhmmss + "." + fileTimeMilliMicro +'" />'+'\r\n')
-                fOutFile.write( '<meta name="dc:format" content="Daisy 2.02"/>'+'\r\n')
-                fOutFile.write( '<meta name="dc:identifier" content="' + self.lineEditMetaRefOrig.text() + '"/>'+'\r\n')
-                fOutFile.write( '<meta name="dc:title" content="' +  cTitle  + '"/>'+'\r\n')
-                fOutFile.write( '<layout>'+'\r\n')
-                fOutFile.write( '<region id="txt-view"/>'+'\r\n')
-                fOutFile.write( '</layout>'+'\r\n')
-                fOutFile.write( '</head>'+'\r\n')
-                fOutFile.write( '<body>'+'\r\n')
-                lFileTimeSeconds = str(lFileTime[z-1]).split(".")
-                
-                fOutFile.write( '<seq dur="' + lFileTimeSeconds[0] + '.' 
+            fOutFile.write( '<seq dur="' + lFileTimeSeconds[0] + '.' 
                     + fileTimeMilliMicro  +'s">' + '\r\n')
-                fOutFile.write( '<par endsync="last">'+'\r\n')
-                fOutFile.write( '<text src="ncc.html#cnt_' + str(z).zfill(4) 
+            fOutFile.write( '<par endsync="last">'+'\r\n')
+            fOutFile.write( '<text src="ncc.html#cnt_' + str(z).zfill(4) 
                     + '" id="txt_' + str(z).zfill(4) + '" />'+'\r\n')
-                fOutFile.write( '<seq>'+'\r\n')
-                if fileTime < timedelta(seconds=45):
-                    fOutFile.write( '<audio src="' + item 
+            fOutFile.write( '<seq>'+'\r\n')
+            if fileTime < timedelta(seconds=45):
+                fOutFile.write( '<audio src="' + item 
                         + '" clip-begin="npt=0.000s" clip-end="npt=' 
                         + lFileTimeSeconds[0] + '.' + fileTimeMilliMicro 
                         + 's" id="a_' + str(z).zfill(4)  + '" />'+'\r\n')
-                else:
-                    fOutFile.write( '<audio src="' + item 
+            else:
+                fOutFile.write( '<audio src="' + item 
                         + '" clip-begin="npt=0.000s" clip-end="npt=' 
                         + str(15) + '.' + fileTimeMilliMicro + 's" id="a_' 
                         + str(z).zfill(4)  + '" />'+'\r\n')
-                    zz = z+ 1
-                    phraseSeconds = 15
-                    while phraseSeconds <= lFileTime[z-1]-15:
-                        fOutFile.write( '<audio src="' + item 
+                zz = z+ 1
+                phraseSeconds = 15
+                while phraseSeconds <= lFileTime[z-1]-15:
+                    fOutFile.write( '<audio src="' + item 
                             + '" clip-begin="npt='+ str(phraseSeconds)+ '.' 
                             + fileTimeMilliMicro + 's" clip-end="npt=' 
                             + str(phraseSeconds+ 15) + '.' + fileTimeMilliMicro 
                             + 's" id="a_' + str(zz).zfill(4)  + '" />'+'\r\n')
-                        phraseSeconds += 15
-                        zz += 1
-                    fOutFile.write( '<audio src="' + item 
+                    phraseSeconds += 15
+                    zz += 1
+                fOutFile.write( '<audio src="' + item 
                         + '" clip-begin="npt='+ str(phraseSeconds)+ '.' 
                         + fileTimeMilliMicro + 's" clip-end="npt=' 
                         + lFileTimeSeconds[0] + '.' + fileTimeMilliMicro 
                         + 's" id="a_' + str(zz).zfill(4)  + '" />'+'\r\n')
                 
-                fOutFile.write( '</seq>'+'\r\n')
-                fOutFile.write( '</par>'+'\r\n')
-                fOutFile.write( '</seq>'+'\r\n')
+            fOutFile.write( '</seq>'+'\r\n')
+            fOutFile.write( '</par>'+'\r\n')
+            fOutFile.write( '</seq>'+'\r\n')
 
-                fOutFile.write( '</body>'+'\r\n')
-                fOutFile.write('</smil>'+'\r\n')
-                fOutFile.close
+            fOutFile.write( '</body>'+'\r\n')
+            fOutFile.write('</smil>'+'\r\n')
+            fOutFile.close
         self.textEditDaisy.append(u"<b>smil-Dateien geschrieben:</b> " +str(z))
 
     def splitFilename(self,  item):
