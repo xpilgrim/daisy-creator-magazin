@@ -256,80 +256,82 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.showDebugMessage(  zList )
         dirsSource.sort()
         for item in dirsSource:
-            if item[ len(item)-4:len(item) ] == ".MP3" or item[ len(item)-4:len(item) ] == ".mp3":
-                fileToCopySource = self.lineEditCopySource.text() + "/" + item
-                # check if file exist
-                fileNotExist = None
-                try:
-                    with open( fileToCopySource ) as f: pass
-                except IOError as e:
-                    self.showDebugMessage(  u"File not exists" )
-                    fileNotExist = "yes"
-                    # change max number and update progress
-                    zList = zList -1
-                    pZ = z *100 / zList 
-                    self.progressBarCopy.setValue(pZ)
+            if (item[ len(item)-4:len(item) ] != ".MP3" 
+                                    and item[ len(item)-4:len(item) ] != ".mp3"):
+                continue
+            
+            fileToCopySource = self.lineEditCopySource.text() + "/" + item
+            # check if file exist
+            fileNotExist = None
+            try:
+                with open( fileToCopySource ) as f: pass
+            except IOError as e:
+                self.showDebugMessage(  u"File not exists" )
+                fileNotExist = "yes"
+                # change max number and update progress
+                zList = zList -1
+                pZ = z *100 / zList 
+                self.progressBarCopy.setValue(pZ)
+               
+            self.showDebugMessage( fileToCopySource )
                 
-                self.showDebugMessage( fileToCopySource )
-                
-                if  fileNotExist is None:
-                    # cange filenames
-                    if self.checkBoxDaisyIgnoreTitleDigits.isChecked():
-                        fileToCopyDest = ( self.lineEditCopyDest.text() + "/" 
-                            + item[ 0:4 ] + "_" 
-                            + self.comboBoxCopyBhz.currentText() 
-                            + "_" + self.comboBoxCopyBhzAusg.currentText() 
-                            + "_" + item[ 5:len(item)-4] + ".mp3" )    
-                    else:
-                        fileToCopyDest = ( self.lineEditCopyDest.text() + "/" 
-                            + item[ 0:len(item)-4 ] + "_" 
-                            + self.comboBoxCopyBhz.currentText() 
-                            + "_" + self.comboBoxCopyBhzAusg.currentText() 
-                            + "_" + item[ 0:len(item)-4 ] + ".mp3" )
-                    
-
-                    if self.checkBoxCopyChangeNr1001.isChecked():
-                        # rename 1001.mp3 in 0100 umbenennen 
-                        # to further sort front
-                        if item[0:4] == "1001":
-                            fileToCopyDest = (self.lineEditCopyDest.text() 
-                                              + "/0100_" + self.comboBoxCopyBhz.currentText() 
-                                              + "_" + self.comboBoxCopyBhzAusg.currentText() 
-                                              + "_" + item[ 0:len(item)-4 ] 
-                                              + ".mp3" )
-                            self.textEdit.append(u"<b>1000.mp3 in 0100 umbenannt "
-                                "damit die Ansage weiter vorn einsortiert wird</b>")
-                    
-                    if self.checkBoxCopyChangeNr1000.isChecked():
-                        # rename 1000.mp3 in 0100 umbenennen 
-                        # to further sort front
-                        if item[0:4] == "1000":
-                            fileToCopyDest = (self.lineEditCopyDest.text() 
-                                + "/0100_" + self.comboBoxCopyBhz.currentText() 
-                                + "_" + self.comboBoxCopyBhzAusg.currentText() 
-                                + "_" + item[ 0:len(item)-4 ] + ".mp3")
-                            self.textEdit.append(u"<b>1000.mp3 in 0100 umbenannt damit die Ansage weiter vorn einsortiert wird</b>")
-                    
-                    self.textEdit.append(fileToCopyDest)
-                    self.showDebugMessage( fileToCopySource )
-                    self.showDebugMessage( fileToCopyDest )
-                    
-                    # check bitrate, when necessary recode in new destination
-                    isChangedAndCopy = self.checkChangeBitrateAndCopy( fileToCopySource,  fileToCopyDest )
-                    # nothing to do, only copy
-                    if  isChangedAndCopy is None: 
-                        self.copyFile( fileToCopySource, fileToCopyDest)
-                    
-                    self.checkCangeId3( fileToCopyDest)
-                    z += 1
-                    self.showDebugMessage( z )
-                    self.showDebugMessage( zList )
-                    pZ = z *100 / zList 
-                    self.showDebugMessage( pZ )
-                    self.progressBarCopy.setValue(pZ)
+            if  fileNotExist is None:
+                # cange filenames
+                if self.checkBoxDaisyIgnoreTitleDigits.isChecked():
+                    fileToCopyDest = ( self.lineEditCopyDest.text() + "/" 
+                        + item[ 0:4 ] + "_" 
+                        + self.comboBoxCopyBhz.currentText() 
+                        + "_" + self.comboBoxCopyBhzAusg.currentText() 
+                        + "_" + item[ 5:len(item)-4] + ".mp3" )    
                 else:
-                    self.textEdit.append("<b>Uebersprungen</b>:")
-                    self.textEdit.append(fileToCopySource)
+                    fileToCopyDest = ( self.lineEditCopyDest.text() + "/" 
+                        + item[ 0:len(item)-4 ] + "_" 
+                        + self.comboBoxCopyBhz.currentText() 
+                        + "_" + self.comboBoxCopyBhzAusg.currentText() 
+                        + "_" + item[ 0:len(item)-4 ] + ".mp3" )
+                    
+                if self.checkBoxCopyChangeNr1001.isChecked():
+                    # rename 1001.mp3 in 0100 umbenennen 
+                    # to further sort front
+                    if item[0:4] == "1001":
+                        fileToCopyDest = (self.lineEditCopyDest.text() 
+                                            + "/0100_" + self.comboBoxCopyBhz.currentText() 
+                                            + "_" + self.comboBoxCopyBhzAusg.currentText() 
+                                            + "_" + item[ 0:len(item)-4 ] 
+                                            + ".mp3" )
+                        self.textEdit.append(u"<b>1000.mp3 in 0100 umbenannt "
+                            "damit die Ansage weiter vorn einsortiert wird</b>")
+                    
+                if self.checkBoxCopyChangeNr1000.isChecked():
+                    # rename 1000.mp3 in 0100 umbenennen 
+                    # to further sort front
+                    if item[0:4] == "1000":
+                        fileToCopyDest = (self.lineEditCopyDest.text() 
+                            + "/0100_" + self.comboBoxCopyBhz.currentText() 
+                            + "_" + self.comboBoxCopyBhzAusg.currentText() 
+                            + "_" + item[ 0:len(item)-4 ] + ".mp3")
+                        self.textEdit.append(u"<b>1000.mp3 in 0100 umbenannt damit die Ansage weiter vorn einsortiert wird</b>")
+                    
+                self.textEdit.append(fileToCopyDest)
+                self.showDebugMessage( fileToCopySource )
+                self.showDebugMessage( fileToCopyDest )
+                    
+                # check bitrate, when necessary recode in new destination
+                isChangedAndCopy = self.checkChangeBitrateAndCopy( fileToCopySource,  fileToCopyDest )
+                # nothing to do, only copy
+                if  isChangedAndCopy is None: 
+                    self.copyFile( fileToCopySource, fileToCopyDest)
+                    
+                self.checkCangeId3( fileToCopyDest)
+                z += 1
+                self.showDebugMessage( z )
+                self.showDebugMessage( zList )
+                pZ = z *100 / zList 
+                self.showDebugMessage( pZ )
+                self.progressBarCopy.setValue(pZ)
+            else:
+                self.textEdit.append("<b>Uebersprungen</b>:")
+                self.textEdit.append(fileToCopySource)
         
         self.showDebugMessage( z )
         if self.checkBoxCopyBhzIntro.isChecked():
@@ -350,7 +352,6 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.metaLoadFile()
         # enter path of source and destination 
         self.lineEditDaisySource.setText(self.lineEditCopyDest.text())
-        
    
     def copyFile(self, fileToCopySource, fileToCopyDest):
         """copy file """
