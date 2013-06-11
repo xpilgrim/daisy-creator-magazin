@@ -104,9 +104,11 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         config.read("daisy_creator_mag.config")
         self.app_bhzPfad = config.get('Ordner', 'BHZ')
         self.app_bhzPfadMeta = config.get('Ordner', 'BHZ-Meta')
-        self.app_bhzPfadAusgabeansage  = config.get('Ordner', 'BHZ-Ausgabeansage')
+        self.app_bhzPfadAusgabeansage  = config.get('Ordner', 
+            'BHZ-Ausgabeansage')
         self.app_bhzPfadIntro  = config.get('Ordner', 'BHZ-Intro')
-        self.app_bhzItems  = config.get('Blindenhoerzeitschriften', 'BHZ').split(",")
+        self.app_bhzItems  = config.get('Blindenhoerzeitschriften', 
+            'BHZ').split(",")
 
     def readHelp(self ):
         """read Readme from file"""
@@ -115,7 +117,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             with open( "README.md" ) as f: pass
         except IOError as e:
             self.showDebugMessage(  u"File not exists" )
-            self.textEdit.append("<b>Help-Datei konnte nicht geladen werden...</b>")   
+            self.textEdit.append(
+                "<b>Help-Datei konnte nicht geladen werden...</b>") 
             fileNotExist = "yes"
         
         if  fileNotExist is not None:
@@ -126,7 +129,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.textEditHelp.append(line)
         # set cursor on top of helpfile
         cursor = self.textEditHelp.textCursor()
-        cursor.movePosition(QtGui.QTextCursor.Start, QtGui.QTextCursor.MoveAnchor, 0)
+        cursor.movePosition(QtGui.QTextCursor.Start, 
+                            QtGui.QTextCursor.MoveAnchor, 0)
         self.textEditHelp.setTextCursor(cursor)
         fobj.close()
 
@@ -253,7 +257,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         dirsSource.sort()
         for item in dirsSource:
             if item[ len(item)-4:len(item) ] == ".MP3" or item[ len(item)-4:len(item) ] == ".mp3":
-                fileToCopySource = self.lineEditCopySource.text() + "/" + item 
+                fileToCopySource = self.lineEditCopySource.text() + "/" + item
                 # check if file exist
                 fileNotExist = None
                 try:
@@ -285,7 +289,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                     
 
                     if self.checkBoxCopyChangeNr1001.isChecked():
-                        # rename 1000.mp3 in 0100 umbenennen 
+                        # rename 1001.mp3 in 0100 umbenennen 
                         # to further sort front
                         if item[0:4] == "1001":
                             fileToCopyDest = (self.lineEditCopyDest.text() 
@@ -297,9 +301,13 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                                 "damit die Ansage weiter vorn einsortiert wird</b>")
                     
                     if self.checkBoxCopyChangeNr1000.isChecked():
-                        # 1000.mp3 in 0100 umbenennen damit die Ansage weiter vorn einsortiert wird
+                        # rename 1000.mp3 in 0100 umbenennen 
+                        # to further sort front
                         if item[0:4] == "1000":
-                            fileToCopyDest = self.lineEditCopyDest.text() + "/0100_" + self.comboBoxCopyBhz.currentText() + "_" + self.comboBoxCopyBhzAusg.currentText() + "_" + item[ 0:len(item)-4 ] + ".mp3"
+                            fileToCopyDest = (self.lineEditCopyDest.text() 
+                                + "/0100_" + self.comboBoxCopyBhz.currentText() 
+                                + "_" + self.comboBoxCopyBhzAusg.currentText() 
+                                + "_" + item[ 0:len(item)-4 ] + ".mp3")
                             self.textEdit.append(u"<b>1000.mp3 in 0100 umbenannt damit die Ansage weiter vorn einsortiert wird</b>")
                     
                     self.textEdit.append(fileToCopyDest)
@@ -337,30 +345,38 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.copyZusatzDatei( 2 )
         
         # load metadata
-        self.lineEditMetaSource.setText(self.app_bhzPfadMeta + "/Daisy_Meta_" + self.comboBoxCopyBhz.currentText()  )
+        self.lineEditMetaSource.setText(self.app_bhzPfadMeta + "/Daisy_Meta_" 
+                                        + self.comboBoxCopyBhz.currentText()  )
         self.metaLoadFile()
         # enter path of source and destination 
         self.lineEditDaisySource.setText(self.lineEditCopyDest.text())
         
    
     def copyFile(self, fileToCopySource, fileToCopyDest):
-       """copy file """
-       try:
+        """copy file """
+        try:
             shutil.copy( fileToCopySource, fileToCopyDest )
-       except Exception, e:
+        except Exception, e:
             logMessage = u"copy_file Error: %s" % str(e)
             self.showDebugMessage(logMessage)
             self.textEdit.append(logMessage + fileToCopyDest)
     
     def copyIntro(self):
         """copy Intro"""
-        fileToCopySource = self.app_bhzPfadIntro + "/Intro_" +  self.comboBoxCopyBhz.currentText()  + ".mp3"
+        fileToCopySource = (self.app_bhzPfadIntro + "/Intro_" 
+                            +  self.comboBoxCopyBhz.currentText()  + ".mp3")
         #if self.comboBoxCopyBhz.currentText() == "Bibel_fuer_heute":
         if self.checkBoxDaisyLevel.isChecked():
             # include level in filename
-            fileToCopyDest = self.lineEditCopyDest.text() + "/0010_1_" +  self.comboBoxCopyBhz.currentText() + "_" + self.comboBoxCopyBhzAusg.currentText() + "_Intro.mp3"
+            fileToCopyDest = (self.lineEditCopyDest.text() + "/0010_1_" 
+                              +  self.comboBoxCopyBhz.currentText() + "_" 
+                              + self.comboBoxCopyBhzAusg.currentText() 
+                              + "_Intro.mp3")
         else:
-            fileToCopyDest = self.lineEditCopyDest.text() + "/0010_" +  self.comboBoxCopyBhz.currentText() + "_" + self.comboBoxCopyBhzAusg.currentText() + "_Intro.mp3"
+            fileToCopyDest = (self.lineEditCopyDest.text() + "/0010_" 
+                              +  self.comboBoxCopyBhz.currentText() + "_" 
+                              + self.comboBoxCopyBhzAusg.currentText() 
+                              + "_Intro.mp3")
         self.showDebugMessage(fileToCopySource)
         self.showDebugMessage(fileToCopyDest)
         fileNotExist = None
@@ -369,7 +385,9 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         except IOError as e:
             self.showDebugMessage(  u"File not exists" )
             # change from QTString to String
-            self.textEdit.append("<font color='red'>Intro nicht vorhanden</font>: " + os.path.basename(str(fileToCopySource)))
+            self.textEdit.append(
+                "<font color='red'>Intro nicht vorhanden</font>: " 
+                + os.path.basename(str(fileToCopySource)))
             fileNotExist = "yes"
         
         if  fileNotExist is None:
