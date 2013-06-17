@@ -25,7 +25,6 @@ pyuic4 daisy_creator_mag.ui -o daisy_creator_mag_ui.py
 """ 
 
 #TODO: Weiter mit pylint --disable=W0402 --const-rgx='[a-z_A-Z][a-z0-9_]{2,30}$' daisy_creator_mag.py
-#TODO:  try exept in write ncc wie in write smil korrigieren
 
 from PyQt4 import QtGui, QtCore
 import sys
@@ -257,7 +256,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         dirsSource.sort()
         for item in dirsSource:
             if (item[ len(item)-4:len(item) ] != ".MP3" 
-                                    and item[ len(item)-4:len(item) ] != ".mp3"):
+                                and item[ len(item)-4:len(item) ] != ".mp3"):
                 continue
             
             fileToCopySource = self.lineEditCopySource.text() + "/" + item
@@ -295,10 +294,10 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                     # to further sort front
                     if item[0:4] == "1001":
                         fileToCopyDest = (self.lineEditCopyDest.text() 
-                                            + "/0100_" + self.comboBoxCopyBhz.currentText() 
-                                            + "_" + self.comboBoxCopyBhzAusg.currentText() 
-                                            + "_" + item[ 0:len(item)-4 ] 
-                                            + ".mp3" )
+                                + "/0100_" + self.comboBoxCopyBhz.currentText() 
+                                + "_" + self.comboBoxCopyBhzAusg.currentText() 
+                                + "_" + item[ 0:len(item)-4 ] 
+                                + ".mp3" )
                         self.textEdit.append(u"<b>1000.mp3 in 0100 umbenannt "
                             "damit die Ansage weiter vorn einsortiert wird</b>")
                     
@@ -310,14 +309,17 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                             + "/0100_" + self.comboBoxCopyBhz.currentText() 
                             + "_" + self.comboBoxCopyBhzAusg.currentText() 
                             + "_" + item[ 0:len(item)-4 ] + ".mp3")
-                        self.textEdit.append(u"<b>1000.mp3 in 0100 umbenannt damit die Ansage weiter vorn einsortiert wird</b>")
+                        self.textEdit.append(
+                            u"<b>1000.mp3 in 0100 umbenannt "
+                            "damit die Ansage weiter vorn einsortiert wird</b>")
                     
                 self.textEdit.append(fileToCopyDest)
                 self.showDebugMessage( fileToCopySource )
                 self.showDebugMessage( fileToCopyDest )
                     
                 # check bitrate, when necessary recode in new destination
-                isChangedAndCopy = self.checkChangeBitrateAndCopy( fileToCopySource,  fileToCopyDest )
+                isChangedAndCopy = self.checkChangeBitrateAndCopy(
+                                fileToCopySource,  fileToCopyDest)
                 # nothing to do, only copy
                 if  isChangedAndCopy is None: 
                     self.copyFile( fileToCopySource, fileToCopyDest)
@@ -398,10 +400,16 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
     
     def copyAusgabeAnsage(self):
         """copy issue number"""
-        pfadAusgabe = self.app_bhzPfadAusgabeansage + "_" + self.comboBoxCopyBhzAusg.currentText()[0:4] + "_" + self.comboBoxCopyBhz.currentText() 
+        pfadAusgabe = (self.app_bhzPfadAusgabeansage 
+                       + "_" + self.comboBoxCopyBhzAusg.currentText()[0:4] 
+                       + "_" + self.comboBoxCopyBhz.currentText() )
         self.showDebugMessage(pfadAusgabe)
-        fileToCopySource = pfadAusgabe + "/0001_" +  self.comboBoxCopyBhz.currentText() + "_" + self.comboBoxCopyBhzAusg.currentText() + "_Ausgabeansage.mp3"
-        fileToCopyDest = self.lineEditCopyDest.text() + "/0001_" +  self.comboBoxCopyBhz.currentText() + "_" + self.comboBoxCopyBhzAusg.currentText() + "_Ausgabeansage.mp3"
+        fileToCopySource = (pfadAusgabe + "/0001_" 
+            +  self.comboBoxCopyBhz.currentText() + "_" 
+            + self.comboBoxCopyBhzAusg.currentText() + "_Ausgabeansage.mp3")
+        fileToCopyDest = (self.lineEditCopyDest.text() + "/0001_" 
+            +  self.comboBoxCopyBhz.currentText() + "_" 
+            + self.comboBoxCopyBhzAusg.currentText() + "_Ausgabeansage.mp3")
         self.showDebugMessage(fileToCopySource)
         self.showDebugMessage(fileToCopyDest)
         fileNotExist = None
@@ -410,7 +418,9 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         except IOError as e:
             self.showDebugMessage(  u"File not exists" )
             # change from QTString to String
-            self.textEdit.append("<font color='red'>Ausgabeansage nicht vorhanden</font>: " + os.path.basename(str(fileToCopySource)))
+            self.textEdit.append(
+                "<font color='red'>Ausgabeansage nicht vorhanden</font>: " 
+                + os.path.basename(str(fileToCopySource)))
             fileNotExist = "yes"
         
         if  fileNotExist is None:
@@ -431,7 +441,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.showDebugMessage( u"Bitrate check: " + filename)
         fileToCopyDest = str(self.lineEditCopyDest.text()) +"/"+ filename
         # check bitrate, when necessary recode in new destination
-        isChangedAndCopy = self.checkChangeBitrateAndCopy( patFilenameSource,  str(fileToCopyDest) )
+        isChangedAndCopy = self.checkChangeBitrateAndCopy(
+                        patFilenameSource,  str(fileToCopyDest))
         # nothing to do, only copy
         if  isChangedAndCopy is None: 
             #shutil.copy( fileToCopySource, fileToCopyDest )
@@ -450,29 +461,38 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         if tag is not None:
             if self.checkBoxCopyID3Change.isChecked():
                 audio.delete()
-                self.textEdit.append("<b>ID3 entfernt bei</b>: " + fileToCopyDest)
+                self.textEdit.append("<b>ID3 entfernt bei</b>: " 
+                                     + fileToCopyDest)
                 self.showDebugMessage( u"ID3 entfernt bei " + fileToCopyDest)
             else:
-                self.textEdit.append("<b>ID3 vorhanden, aber NICHT entfernt bei</b>: " + fileToCopyDest)
+                self.textEdit.append(
+                    "<b>ID3 vorhanden, aber NICHT entfernt bei</b>: " 
+                    + fileToCopyDest)
     
     def checkChangeBitrateAndCopy(self,  fileToCopySource, fileToCopyDest):
         """check bitrate, when necessary recode in new destination"""
         isChangedAndCopy = None
         audioSource = MP3( fileToCopySource )
-        if audioSource.info.bitrate != int(self.comboBoxPrefBitrate.currentText())*1000:
+        if (audioSource.info.bitrate != 
+            int(self.comboBoxPrefBitrate.currentText())*1000):
             isEncoded = None
-            self.textEdit.append( u"Bitrate Vorgabe: " + str(self.comboBoxPrefBitrate.currentText()) )
-            self.textEdit.append( u"<b>Bitrate folgender Datei entspricht nicht der Vorgabe:</b> " + str(audioSource.info.bitrate/1000) + " " + fileToCopySource)
+            self.textEdit.append( u"Bitrate Vorgabe: " 
+                                 + str(self.comboBoxPrefBitrate.currentText()))
+            self.textEdit.append( 
+                u"<b>Bitrate folgender Datei entspricht nicht der Vorgabe:</b> "
+                + str(audioSource.info.bitrate/1000) + " " + fileToCopySource)
             
             if self.checkBoxCopyBitrateChange.isChecked():
                 self.textEdit.append(u"<b>Bitrate aendern bei</b>: " 
                                      + fileToCopyDest)
                 isEncoded = self.encodeFile( fileToCopySource, fileToCopyDest )
                 if isEncoded is not None:
-                    self.textEdit.append(u"<b>Bitrate geaendert bei</b>: " + fileToCopyDest)
+                    self.textEdit.append(u"<b>Bitrate geaendert bei</b>: " 
+                                         + fileToCopyDest)
                     isChangedAndCopy = True
             else:
-                self.textEdit.append(u"<b>Bitrate wurde NICHT geaendern bei</b>: " + fileToCopyDest)
+                self.textEdit.append(u"<b>Bitrate wurde NICHT geaendern bei</b>: " 
+                                     + fileToCopyDest)
         return isChangedAndCopy
     
     def encodeFile(self, fileToCopySource, fileToCopyDest ):
@@ -489,8 +509,11 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.showDebugMessage( u"type(fileToCopyDest)" )
         self.showDebugMessage( type( fileToCopyDest ) )
         
-        #p = subprocess.Popen([c_lame_encoder, "-b",  "64", "-m",  "m",  fileToCopySource, fileToCopyDest ],  stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate(  )
-        p = subprocess.Popen([c_lame_encoder, "-b",  self.comboBoxPrefBitrate.currentText(), "-m",  "m",  fileToCopySource, fileToCopyDest ],  stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate(  )
+        p = subprocess.Popen([c_lame_encoder, "-b", 
+            self.comboBoxPrefBitrate.currentText(), "-m",  "m", 
+            fileToCopySource, fileToCopyDest ], 
+            stdout=subprocess.PIPE, 
+            stderr=subprocess.PIPE).communicate( )
 
         self.showDebugMessage( u"returncode 0" )
         self.showDebugMessage( p[0] )
@@ -527,7 +550,9 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             with open( str(self.lineEditMetaSource.text()) ) as f: pass
         except IOError as e:
             self.showDebugMessage(  u"File not exists" )
-            self.textEdit.append("<font color='red'>Meta-Datei konnte nicht geladen werden</font>: " + os.path.basename(str(self.lineEditMetaSource.text())))   
+            self.textEdit.append(
+                "<font color='red'>Meta-Datei konnte nicht geladen werden</font>: " 
+                + os.path.basename(str(self.lineEditMetaSource.text())))   
             fileNotExist = "yes"
         
         if  fileNotExist is not None:
