@@ -473,26 +473,28 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         """check bitrate, when necessary recode in new destination"""
         isChangedAndCopy = None
         audioSource = MP3( fileToCopySource )
-        if (audioSource.info.bitrate != 
+        if (audioSource.info.bitrate == 
             int(self.comboBoxPrefBitrate.currentText())*1000):
-            isEncoded = None
-            self.textEdit.append( u"Bitrate Vorgabe: " 
-                                 + str(self.comboBoxPrefBitrate.currentText()))
-            self.textEdit.append( 
-                u"<b>Bitrate folgender Datei entspricht nicht der Vorgabe:</b> "
-                + str(audioSource.info.bitrate/1000) + " " + fileToCopySource)
+            return isChangedAndCopy
             
-            if self.checkBoxCopyBitrateChange.isChecked():
-                self.textEdit.append(u"<b>Bitrate aendern bei</b>: " 
-                                     + fileToCopyDest)
-                isEncoded = self.encodeFile( fileToCopySource, fileToCopyDest )
-                if isEncoded is not None:
-                    self.textEdit.append(u"<b>Bitrate geaendert bei</b>: " 
-                                         + fileToCopyDest)
-                    isChangedAndCopy = True
-            else:
-                self.textEdit.append(u"<b>Bitrate wurde NICHT geaendern bei</b>: " 
-                                     + fileToCopyDest)
+        isEncoded = None
+        self.textEdit.append( u"Bitrate Vorgabe: " 
+                            + str(self.comboBoxPrefBitrate.currentText()))
+        self.textEdit.append( 
+            u"<b>Bitrate folgender Datei entspricht nicht der Vorgabe:</b> "
+            + str(audioSource.info.bitrate/1000) + " " + fileToCopySource)
+            
+        if self.checkBoxCopyBitrateChange.isChecked():
+            self.textEdit.append(u"<b>Bitrate aendern bei</b>: " 
+                                + fileToCopyDest)
+            isEncoded = self.encodeFile( fileToCopySource, fileToCopyDest )
+            if isEncoded is not None:
+                self.textEdit.append(u"<b>Bitrate geaendert bei</b>: " 
+                                    + fileToCopyDest)
+                isChangedAndCopy = True
+        else:
+            self.textEdit.append(u"<b>Bitrate wurde NICHT geaendern bei</b>: " 
+                                + fileToCopyDest)
         return isChangedAndCopy
     
     def encodeFile(self, fileToCopySource, fileToCopyDest ):
@@ -526,7 +528,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.showDebugMessage( n_encode_percent )
         c_complete = "no"
     
-        # if the file is very short, no 100% message appear, then also accept 99% 
+        # if the file is very short, no 100% message appear, 
+        # then also accept 99% 
         if n_encode_percent == -1:
             # no 100% 
             if n_encode_percent_1 != -1:
@@ -551,7 +554,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         except IOError as e:
             self.showDebugMessage(  u"File not exists" )
             self.textEdit.append(
-                "<font color='red'>Meta-Datei konnte nicht geladen werden</font>: " 
+                "<font color='red'>"
+                +"Meta-Datei konnte nicht geladen werden</font>: " 
                 + os.path.basename(str(self.lineEditMetaSource.text())))   
             fileNotExist = "yes"
         
@@ -567,8 +571,10 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.lineEditMetaTitle.setText(config.get('Daisy_Meta', 'Titel'))
         self.lineEditMetaEdition.setText(config.get('Daisy_Meta', 'Edition'))
         self.lineEditMetaNarrator.setText(config.get('Daisy_Meta', 'Sprecher'))
-        self.lineEditMetaKeywords.setText(config.get('Daisy_Meta', 'Stichworte'))
-        self.lineEditMetaRefOrig.setText(config.get('Daisy_Meta', 'ISBN/Ref-Nr.Original'))
+        self.lineEditMetaKeywords.setText(config.get('Daisy_Meta', 
+                        'Stichworte'))
+        self.lineEditMetaRefOrig.setText(config.get('Daisy_Meta', 
+                        'ISBN/Ref-Nr.Original'))
         self.lineEditMetaPublisher.setText(config.get('Daisy_Meta', 'Verlag'))
         self.lineEditMetaYear.setText(config.get('Daisy_Meta', 'Jahr'))
     
