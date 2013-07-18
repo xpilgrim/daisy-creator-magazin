@@ -22,9 +22,12 @@ sudo apt-get install python-mutagen
 
 update qt-GUI by development:
 pyuic4 daisy_creator_mag.ui -o daisy_creator_mag_ui.py
+
+code-checking with:
+pylint --disable=W0402 --const-rgx='[a-z_A-Z][a-z0-9_]{2,30}$' 
+daisy_creator_mag.py
 """ 
 
-#TODO: Weiter mit pylint --disable=W0402 --const-rgx='[a-z_A-Z][a-z0-9_]{2,30}$' daisy_creator_mag.py
 
 from PyQt4 import QtGui, QtCore
 import sys
@@ -34,7 +37,6 @@ import datetime
 from datetime import timedelta
 import ntpath
 import subprocess
-#import types
 import string
 import re
 from mutagen.mp3 import MP3
@@ -601,7 +603,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         dirAudios = []
         dirItems.sort()
         for item in dirItems:
-            if item[ len(item)-4:len(item) ] == ".MP3" or item[ len(item)-4:len(item) ] == ".mp3":
+            if (item[ len(item)-4:len(item) ] == ".MP3" 
+                    or item[ len(item)-4:len(item) ] == ".mp3"):
                 dirAudios.append(item) 
                 self.textEditDaisy.append(item)
                 zMp3 += 1
@@ -634,7 +637,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         lTotalElapsedTime.append(0)
         lFileTime = []
         for item in dirAudios:
-            fileToCheck = os.path.join( str(self.lineEditDaisySource.text()), item) 
+            fileToCheck = os.path.join(
+                        str(self.lineEditDaisySource.text()), item) 
             audioSource = MP3( fileToCheck )
             self.showDebugMessage(item + " "+ str(audioSource.info.length))
             totalAudioLength += audioSource.info.length
@@ -660,9 +664,11 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         
         try:
             fOutFile = open( 
-            os.path.join( str(self.lineEditDaisySource.text()), "ncc.html")  , 'w')
+            os.path.join(
+                    str(self.lineEditDaisySource.text()), "ncc.html") , 'w')
         except IOError as (errno, strerror):
-            self.showDebugMessage( "I/O error({0}): {1}".format(errno, strerror) )
+            self.showDebugMessage(
+                "I/O error({0}): {1}".format(errno, strerror))
             return
         #else:
         self.textEditDaisy.append(u"<b>NCC-Datei schreiben...</b>")
@@ -750,8 +756,10 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             z += 1
             if z == 1:
                 fOutFile.write(
-                '<h1 class="title" id="cnt_0001"><a href="0001.smil#txt_0001">' 
-                + self.lineEditMetaAutor.text()+ ": " + self.lineEditMetaTitle.text() 
+                '<h1 class="title" id="cnt_0001">'
+                +'<a href="0001.smil#txt_0001">' 
+                + self.lineEditMetaAutor.text()+ ": " 
+                + self.lineEditMetaTitle.text() 
                 + '</a></h1>'+ '\r\n')
                 continue
             # splitting
@@ -776,7 +784,9 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 
             # Levels
             if self.checkBoxDaisyLevel.isChecked():
-                # multible levels, extract level-no from digit in filename (1. digit after underline)
+                # multible levels, 
+                # extract level-no from digit in filename 
+                # (1. digit after underline)
                 self.showDebugMessage( item[5:6] )
                 fOutFile.write('<h'+ item[5:6] +' id="cnt_'
                     +str(z).zfill(4)+'"><a href="'+str(z).zfill(4)
@@ -796,9 +806,10 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         """write MasterSmil-page"""
         try:
             fOutFile = open( 
-            os.path.join( str(self.lineEditDaisySource.text()), "master.smil")  , 'w')
+            os.path.join(
+                    str(self.lineEditDaisySource.text()), "master.smil") , 'w')
         except IOError as (errno, strerror):
-            self.showDebugMessage( "I/O error({0}): {1}".format(errno, strerror) )
+            self.showDebugMessage("I/O error({0}): {1}".format(errno, strerror))
         else:
             self.textEditDaisy.append(u"<b>MasterSmil-Datei schreiben...</b>")
             fOutFile.write( '<?xml version="1.0" encoding="utf-8"?>'+ '\r\n' )
@@ -855,7 +866,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                     "I/O error({0}): {1}".format(errno, strerror) )
                 return
             #else:
-            self.textEditDaisy.append( str(z).zfill(4) +u".smil - File schreiben")
+            self.textEditDaisy.append(
+                                str(z).zfill(4) +u".smil - File schreiben")
             # splitting
             itemSplit = self.splitFilename( item)
             cTitle = self.extractTitle( itemSplit)  
