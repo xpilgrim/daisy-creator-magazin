@@ -280,11 +280,18 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             if  fileNotExist is None:
                 # cange filenames
                 if self.checkBoxDaisyIgnoreTitleDigits.isChecked():
-                    fileToCopyDest = (self.lineEditCopyDest.text() + "/"
-                        + item[0:4] + "_"
-                        + self.comboBoxCopyBhz.currentText()
-                        + "_" + self.comboBoxCopyBhzAusg.currentText()
-                        + "_" + item[5:len(item) - 4] + ".mp3")
+                    if self.checkBoxDaisyLevel.isChecked():
+                        fileToCopyDest = (self.lineEditCopyDest.text() + "/"
+                            + item[0:6] + "_"
+                            + self.comboBoxCopyBhz.currentText()
+                            + "_" + self.comboBoxCopyBhzAusg.currentText()
+                            + "_" + item[6:len(item) - 4] + ".mp3")
+                    else:
+                        fileToCopyDest = (self.lineEditCopyDest.text() + "/"
+                            + item[0:4] + "_"
+                            + self.comboBoxCopyBhz.currentText()
+                            + "_" + self.comboBoxCopyBhzAusg.currentText()
+                            + "_" + item[5:len(item) - 4] + ".mp3")
                 else:
                     fileToCopyDest = (self.lineEditCopyDest.text() + "/"
                         + item[0:len(item) - 4] + "_"
@@ -789,10 +796,16 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 # extract level-no from digit in filename
                 # (1. digit after underline)
                 self.showDebugMessage(item[5:6])
-                fOutFile.write('<h' + item[5:6] + ' id="cnt_'
-                    + str(z).zfill(4) + '"><a href="' + str(z).zfill(4)
-                    + '.smil#txt_' + str(z).zfill(4) + '">' + cTitleDate
-                    + '</a></h' + item[5:6] + '>' + '\r\n')
+                if self.checkBoxDaisyDateCalendar.isChecked():
+                    fOutFile.write('<h' + item[5:6] + ' id="cnt_'
+                        + str(z).zfill(4) + '"><a href="' + str(z).zfill(4)
+                        + '.smil#txt_' + str(z).zfill(4) + '">' + cTitleDate
+                        + '</a></h' + item[5:6] + '>' + '\r\n')
+                else:
+                    fOutFile.write('<h' + item[5:6] + ' id="cnt_'
+                        + str(z).zfill(4) + '"><a href="' + str(z).zfill(4)
+                        + '.smil#txt_' + str(z).zfill(4) + '">' + cTitle
+                        + '</a></h' + item[5:6] + '>' + '\r\n')
             else:
                 fOutFile.write('<h1 id="cnt_' + str(z).zfill(4) + '"><a href="'
                     + str(z).zfill(4) + '.smil#txt_' + str(z).zfill(4)
