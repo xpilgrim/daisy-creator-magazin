@@ -94,16 +94,13 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
 
     def readConfig(self):
         """read Config from file"""
-        fileNotExist = None
-        try:
-            with open("daisy_creator_mag.config") as f: pass
-        except IOError:
+        fileNotExist = os.path.isfile("daisy_creator_mag.config")
+        if fileNotExist is False:
             self.showDebugMessage(u"File not exists")
             self.textEdit.append(
-                "<b>Config-Datei konnte nicht geladen werden...</b>")
-            fileNotExist = "yes"
-
-        if fileNotExist is not None:
+                "<font color='red'>"
+                + "Config-Datei konnte nicht geladen werden: </font>"
+                + "daisy_creator_mag.config")
             return
 
         config = ConfigParser.RawConfigParser()
@@ -119,16 +116,13 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
 
     def readHelp(self):
         """read Readme from file"""
-        fileNotExist = None
-        try:
-            with open("README.md") as f: pass
-        except IOError:
+        fileNotExist = os.path.isfile("README.md")
+        if fileNotExist is False:
             self.showDebugMessage(u"File not exists")
             self.textEdit.append(
-                "<b>Help-Datei konnte nicht geladen werden...</b>")
-            fileNotExist = "yes"
-
-        if  fileNotExist is not None:
+                "<font color='red'>"
+                + "Hilfe-Datei konnte nicht geladen werden: </font>"
+                + "README.md")
             return
 
         fobj = open("README.md")
