@@ -118,7 +118,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         """read Readme from file"""
         fileNotExist = os.path.isfile("README.md")
         if fileNotExist is False:
-            self.showDebugMessage(u"File not exists")
+            self.showDebugMessage("File not exists")
             self.textEdit.append(
                 "<font color='red'>"
                 + "Hilfe-Datei konnte nicht geladen werden: </font>"
@@ -237,14 +237,14 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         try:
             dirsSource = os.listdir(self.lineEditCopySource.text())
         except Exception, e:
-            errorMessage = u"Quelle: %s" % str(e)
+            errorMessage = "Quelle: %s" % str(e)
             self.showDebugMessage(errorMessage)
             self.showDialogCritical(errorMessage)
             return
 
         # ceck dir of dest
         if os.path.exists(self.lineEditCopyDest.text()) is False:
-            errorMessage = u"Ziel-Ordner existiert nicht.."
+            errorMessage = "Ziel-Ordner existiert nicht.."
             self.showDebugMessage(errorMessage)
             self.showDialogCritical(errorMessage)
             self.lineEditCopyDest.setFocus()
@@ -263,20 +263,19 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
 
             fileToCopySource = self.lineEditCopySource.text() + "/" + item
             # check if file exist
-            fileNotExist = None
-            try:
-                with open( fileToCopySource ) as f: pass
-            except IOError as e:
-                self.showDebugMessage(u"File not exists")
-                fileNotExist = "yes"
+            fileNotExist = os.path.isfile(fileToCopySource)
+            if fileNotExist is False:
+                self.showDebugMessage("File not exists")
                 # change max number and update progress
                 zList = zList - 1
                 pZ = z * 100 / zList
                 self.progressBarCopy.setValue(pZ)
-
+                self.textEdit.append(
+                        "<b>Datei konnte nicht kopiert werden: </b>"
+                        + fileToCopySource)
             self.showDebugMessage(fileToCopySource)
 
-            if  fileNotExist is None:
+            if fileNotExist is True:
                 # cange filenames
                 if self.checkBoxDaisyIgnoreTitleDigits.isChecked():
                     if self.checkBoxDaisyLevel.isChecked():
@@ -307,7 +306,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                                 + "_" + self.comboBoxCopyBhzAusg.currentText()
                                 + "_" + item[0:len(item) - 4]
                                 + ".mp3")
-                        self.textEdit.append(u"<b>1000.mp3 in 0100 umbenannt "
+                        self.textEdit.append("<b>1000.mp3 in 0100 umbenannt "
                             "damit die Ansage weiter vorn einsortiert wird</b>")
 
                 if self.checkBoxCopyChangeNr1000.isChecked():
@@ -319,7 +318,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                             + "_" + self.comboBoxCopyBhzAusg.currentText()
                             + "_" + item[0:len(item) - 4] + ".mp3")
                         self.textEdit.append(
-                            u"<b>1000.mp3 in 0100 umbenannt "
+                            "<b>1000.mp3 in 0100 umbenannt "
                             "damit die Ansage weiter vorn einsortiert wird</b>")
 
                 self.textEdit.append(fileToCopyDest)
@@ -369,7 +368,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         try:
             shutil.copy(fileToCopySource, fileToCopyDest)
         except Exception, e:
-            logMessage = u"copy_file Error: %s" % str(e)
+            logMessage = "copy_file Error: %s" % str(e)
             self.showDebugMessage(logMessage)
             self.textEdit.append(logMessage + fileToCopyDest)
 
@@ -587,16 +586,16 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 c_complete = "yes"
 
             if c_complete == "yes":
-                log_message = u"recoded_file: " + fileToCopySource
+                log_message = "recoded_file: " + fileToCopySource
                 self.showDebugMessage(log_message)
                 return fileToCopyDest
             else:
-                log_message = u"recode_file Error: " + fileToCopySource
+                log_message = "recode_file Error: " + fileToCopySource
                 self.showDebugMessage(log_message)
                 return None
 
         except Exception, e:
-            errMessage = u"Fehler beim Encodieren: %s" % str(e)
+            errMessage = "Fehler beim Encodieren: %s" % str(e)
             self.showDebugMessage(errMessage)
             self.showDialogCritical(errMessage)
             self.textEdit.append(
@@ -604,18 +603,13 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 + os.path.basename(str(fileToCopySource)))
 
     def metaLoadFile(self):
-        fileNotExist = None
-        try:
-            with open( str(self.lineEditMetaSource.text()) ) as f: pass
-        except IOError as e:
-            self.showDebugMessage(u"File not exists")
+        fileNotExist = os.path.isfile(self.lineEditMetaSource.text())
+        if fileNotExist is False:
+            self.showDebugMessage("File not exists")
             self.textEdit.append(
                 "<font color='red'>"
                 + "Meta-Datei konnte nicht geladen werden</font>: "
                 + os.path.basename(str(self.lineEditMetaSource.text())))
-            fileNotExist = "yes"
-
-        if  fileNotExist is not None:
             return
 
         config = ConfigParser.RawConfigParser()
@@ -637,7 +631,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
     def actionRunDaisy(self):
         """create daisy-fileset"""
         if self.lineEditDaisySource.text() == "Quell-Ordner":
-            errorMessage = u"Quell-Ordner wurde nicht ausgewaehlt.."
+            errorMessage = "Quell-Ordner wurde nicht ausgewaehlt.."
             self.showDialogCritical(errorMessage)
             return
 
