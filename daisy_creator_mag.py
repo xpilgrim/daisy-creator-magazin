@@ -18,7 +18,8 @@ This program
 
 needs:
 python-mutagen
-sudo apt-get install python-mutagen
+lame
+sudo apt-get install python-mutagen lame
 
 update qt-GUI by development:
 pyuic4 daisy_creator_mag.ui -o daisy_creator_mag_ui.py
@@ -39,6 +40,7 @@ import ntpath
 import subprocess
 import string
 import re
+import imp
 from mutagen.mp3 import MP3
 from mutagen.id3 import ID3
 from mutagen.id3 import ID3NoHeaderError
@@ -72,6 +74,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.app_bhzPfadMeta = QtCore.QDir.homePath()
         self.app_bhzPfadAusgabeansage = QtCore.QDir.homePath()
         self.app_bhzPfadIntro = QtCore.QDir.homePath()
+        # we need ext package lame
+        self.app_lame = ""
         self.connectActions()
 
     def connectActions(self):
@@ -111,6 +115,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.app_bhzPfadIntro = config.get('Ordner', 'BHZ-Intro')
         self.app_bhzItems = config.get('Blindenhoerzeitschriften',
             'BHZ').split(",")
+        self.app_lame = config.get('Programme', 'LAME')
 
     def readHelp(self):
         """read Readme from file"""
@@ -459,6 +464,44 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.copyFile(patFilenameSource, fileToCopyDest)
             self.checkCangeId3(fileToCopyDest)
 
+    def checkPackages(self, package):
+        """
+        check if package is installed
+        needs subprocess, os
+        http://stackoverflow.com/
+        questions/11210104/check-if-a-program-exists-from-a-python-script
+        """
+        try:
+            devnull = open(os.devnull, "w")
+            subprocess.Popen([package], stdout=devnull,
+                            stderr=devnull).communicate()
+        except OSError as e:
+            if e.errno == os.errno.ENOENT:
+                errorMessage = (u"Es fehlt das Paket:\n " + package
+                                + u"\nZur Nutzung des vollen Funktionsumfanges "
+                                + "muss es installiert werden!")
+                self.showDialogCritical(errorMessage)
+                self.textEdit.append(
+                    "<font color='red'>Es fehlt das Paket: </font> " + package)
+
+    def checkModules(self, pModule):
+        """
+        check if python-module is installed
+        needs imp
+        """
+        try:
+            imp.find_module(pModule)
+            return True
+        except ImportError:
+            errorMessage = (u"Es fehlt das Python-Modul:\n " + pModule
+                                + u"\nZur Nutzung des vollen Funktionsumfanges "
+                                + "muss es installiert werden!")
+            self.showDialogCritical(errorMessage)
+            self.textEdit.append(
+                    "<font color='red'>Es fehlt das Python-Modul: </font> "
+                        + pModule)
+            return False
+
     def checkCangeId3(self, fileToCopyDest):
         """check id3 Tags, mayby kill it"""
         tag = None
@@ -512,50 +555,59 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.showDebugMessage(u"encode_file")
         # characterset of commands is importand
         # encoding in the right manner
-        c_lame_encoder = "/usr/bin/lame"
-        self.showDebugMessage(u"type c_lame_encoder")
-        self.showDebugMessage(type(c_lame_encoder))
+        #c_lame_encoder = "/usr/bin/lame"
+        #self.showDebugMessage(u"type c_lame_encoder")
+        #self.showDebugMessage(type(c_lame_encoder))
         self.showDebugMessage(u"fileToCopySource")
         self.showDebugMessage(type(fileToCopySource))
         self.showDebugMessage(fileToCopyDest)
         self.showDebugMessage(u"type(fileToCopyDest)")
         self.showDebugMessage(type(fileToCopyDest))
 
-        p = subprocess.Popen([c_lame_encoder, "-b",
-            self.comboBoxPrefBitrate.currentText(), "-m", "m",
-            fileToCopySource, fileToCopyDest],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE).communicate()
+        try:
+            p = subprocess.Popen([self.app_lame, "-b",
+                self.comboBoxPrefBitrate.currentText(), "-m", "m",
+                fileToCopySource, fileToCopyDest],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE).communicate()
 
-        self.showDebugMessage(u"returncode 0")
-        self.showDebugMessage(p[0])
-        self.showDebugMessage(u"returncode 1")
-        self.showDebugMessage(p[1])
+            self.showDebugMessage(u"returncode 0")
+            self.showDebugMessage(p[0])
+            self.showDebugMessage(u"returncode 1")
+            self.showDebugMessage(p[1])
 
-        # search for success-message, when not found : -1
-        n_encode_percent = string.find(p[1], "(100%)")
-        n_encode_percent_1 = string.find(p[1], "(99%)")
-        self.showDebugMessage(n_encode_percent)
-        c_complete = "no"
+            # search for success-message, when not found : -1
+            n_encode_percent = string.find(p[1], "(100%)")
+            n_encode_percent_1 = string.find(p[1], "(99%)")
+            self.showDebugMessage(n_encode_percent)
+            c_complete = "no"
 
-        # if the file is very short, no 100% message appear,
-        # then also accept 99%
-        if n_encode_percent == -1:
-            # no 100%
-            if n_encode_percent_1 != -1:
-                #  but 99
+            # if the file is very short, no 100% message appear,
+            # then also accept 99%
+            if n_encode_percent == -1:
+                # no 100%
+                if n_encode_percent_1 != -1:
+                    #  but 99
+                    c_complete = "yes"
+            else:
                 c_complete = "yes"
-        else:
-            c_complete = "yes"
 
-        if c_complete == "yes":
-            log_message = u"recoded_file: " + fileToCopySource
-            self.showDebugMessage(log_message)
-            return fileToCopyDest
-        else:
-            log_message = u"recode_file Error: " + fileToCopySource
-            self.showDebugMessage(log_message)
-            return None
+            if c_complete == "yes":
+                log_message = u"recoded_file: " + fileToCopySource
+                self.showDebugMessage(log_message)
+                return fileToCopyDest
+            else:
+                log_message = u"recode_file Error: " + fileToCopySource
+                self.showDebugMessage(log_message)
+                return None
+
+        except Exception, e:
+            errMessage = u"Fehler beim Encodieren: %s" % str(e)
+            self.showDebugMessage(errMessage)
+            self.showDialogCritical(errMessage)
+            self.textEdit.append(
+                "<font color='red'>Fehler beim Encodieren:</font> "
+                + os.path.basename(str(fileToCopySource)))
 
     def metaLoadFile(self):
         fileNotExist = None
@@ -1011,6 +1063,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         """mainfunction"""
         self.showDebugMessage(u"let's rock")
         self.readConfig()
+        self.checkPackages(self.app_lame)
         self.progressBarCopy.setValue(0)
         self.progressBarDaisy.setValue(0)
         # Bhz in Combo
