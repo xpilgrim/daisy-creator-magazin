@@ -390,21 +390,18 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                               + "_Intro.mp3")
         self.showDebugMessage(fileToCopySource)
         self.showDebugMessage(fileToCopyDest)
-        fileNotExist = None
-        try:
-            with open( fileToCopySource ) as f: pass
-        except IOError as e:
-            self.showDebugMessage(u"File not exists")
-            # change from QTString to String
-            self.textEdit.append(
-                "<font color='red'>Intro nicht vorhanden</font>: "
-                + os.path.basename(str(fileToCopySource)))
-            fileNotExist = "yes"
 
-        if  fileNotExist is None:
-            #shutil.copy( fileToCopySource, fileToCopyDest )
-            self.copyFile(fileToCopySource, fileToCopyDest)
-            self.checkCangeId3(fileToCopyDest)
+        fileNotExist = os.path.isfile(fileToCopySource)
+        if fileNotExist is False:
+            self.showDebugMessage("File not exists")
+            self.textEdit.append(
+                "<font color='red'>"
+                + "Intro nicht vorhanden</font>: "
+                + os.path.basename(str(fileToCopySource)))
+            return
+
+        self.copyFile(fileToCopySource, fileToCopyDest)
+        self.checkCangeId3(fileToCopyDest)
 
     def copyAusgabeAnsage(self):
         """copy issue number"""
@@ -420,21 +417,18 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             + self.comboBoxCopyBhzAusg.currentText() + "_Ausgabeansage.mp3")
         self.showDebugMessage(fileToCopySource)
         self.showDebugMessage(fileToCopyDest)
-        fileNotExist = None
-        try:
-            with open( fileToCopySource ) as f: pass
-        except IOError as e:
-            self.showDebugMessage(u"File not exists")
-            # change from QTString to String
-            self.textEdit.append(
-                "<font color='red'>Ausgabeansage nicht vorhanden</font>: "
-                + os.path.basename(str(fileToCopySource)))
-            fileNotExist = "yes"
 
-        if  fileNotExist is None:
-            #shutil.copy( fileToCopySource, fileToCopyDest )
-            self.copyFile(fileToCopySource, fileToCopyDest)
-            self.checkCangeId3(fileToCopyDest)
+        fileNotExist = os.path.isfile(fileToCopySource)
+        if fileNotExist is False:
+            self.showDebugMessage("File not exists")
+            self.textEdit.append(
+                "<font color='red'>"
+                + "Ausgabeansage nicht vorhanden</font>: "
+                + os.path.basename(str(fileToCopySource)))
+            return
+
+        self.copyFile(fileToCopySource, fileToCopyDest)
+        self.checkCangeId3(fileToCopyDest)
 
     def copyZusatzDatei(self, n):
         """copy additional file kopieren"""
