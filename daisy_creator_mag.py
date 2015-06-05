@@ -275,7 +275,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                         + fileToCopySource)
             self.showDebugMessage(fileToCopySource)
 
-            if fileNotExist is True:
+            if fileExist is True:
                 # cange filenames
                 if self.checkBoxDaisyIgnoreTitleDigits.isChecked():
                     if self.checkBoxDaisyLevel.isChecked():
@@ -391,8 +391,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.showDebugMessage(fileToCopySource)
         self.showDebugMessage(fileToCopyDest)
 
-        fileNotExist = os.path.isfile(fileToCopySource)
-        if fileNotExist is False:
+        fileExist = os.path.isfile(fileToCopySource)
+        if fileExist is False:
             self.showDebugMessage("File not exists")
             self.textEdit.append(
                 "<font color='red'>"
@@ -418,8 +418,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.showDebugMessage(fileToCopySource)
         self.showDebugMessage(fileToCopyDest)
 
-        fileNotExist = os.path.isfile(fileToCopySource)
-        if fileNotExist is False:
+        fileExist = os.path.isfile(fileToCopySource)
+        if fileExist is False:
             self.showDebugMessage("File not exists")
             self.textEdit.append(
                 "<font color='red'>"
@@ -597,8 +597,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                 + os.path.basename(str(fileToCopySource)))
 
     def metaLoadFile(self):
-        fileNotExist = os.path.isfile(self.lineEditMetaSource.text())
-        if fileNotExist is False:
+        fileExist = os.path.isfile(self.lineEditMetaSource.text())
+        if fileExist is False:
             self.showDebugMessage("File not exists")
             self.textEdit.append(
                 "<font color='red'>"
