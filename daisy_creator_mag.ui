@@ -22,7 +22,7 @@
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
-        <string>1 Copy</string>
+        <string>1 Settings</string>
        </attribute>
        <widget class="QPushButton" name="pushButtonClose1">
         <property name="geometry">
@@ -40,8 +40,8 @@
        <widget class="QCheckBox" name="checkBoxCopyChangeNr1000">
         <property name="geometry">
          <rect>
-          <x>25</x>
-          <y>398</y>
+          <x>23</x>
+          <y>418</y>
           <width>301</width>
           <height>22</height>
          </rect>
@@ -94,14 +94,14 @@
          </font>
         </property>
         <property name="text">
-         <string>Daisy-Copy-Tool</string>
+         <string>Daisy - Settings</string>
         </property>
        </widget>
        <widget class="QCheckBox" name="checkBoxCopyBhzIntro">
         <property name="geometry">
          <rect>
-          <x>332</x>
-          <y>338</y>
+          <x>330</x>
+          <y>358</y>
           <width>301</width>
           <height>22</height>
          </rect>
@@ -114,7 +114,7 @@
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>248</y>
+          <y>268</y>
           <width>610</width>
           <height>17</height>
          </rect>
@@ -165,21 +165,11 @@
          <string>...</string>
         </property>
        </widget>
-       <widget class="QTextEdit" name="textEdit">
-        <property name="geometry">
-         <rect>
-          <x>24</x>
-          <y>473</y>
-          <width>610</width>
-          <height>161</height>
-         </rect>
-        </property>
-       </widget>
        <widget class="QCheckBox" name="checkBoxCopyBitrateChange">
         <property name="geometry">
          <rect>
-          <x>25</x>
-          <y>368</y>
+          <x>23</x>
+          <y>388</y>
           <width>301</width>
           <height>22</height>
          </rect>
@@ -214,27 +204,14 @@
          <string>Ziel-Ordner</string>
         </property>
        </widget>
-       <widget class="QProgressBar" name="progressBarCopy">
-        <property name="geometry">
-         <rect>
-          <x>24</x>
-          <y>641</y>
-          <width>610</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="value">
-         <number>24</number>
-        </property>
-       </widget>
        <widget class="QCheckBox" name="checkBoxCopyID3Change">
         <property name="enabled">
          <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
-          <x>332</x>
-          <y>368</y>
+          <x>330</x>
+          <y>388</y>
           <width>301</width>
           <height>22</height>
          </rect>
@@ -247,7 +224,7 @@
         <property name="geometry">
          <rect>
           <x>24</x>
-          <y>270</y>
+          <y>290</y>
           <width>610</width>
           <height>27</height>
          </rect>
@@ -269,8 +246,8 @@
        <widget class="QCheckBox" name="checkBoxCopyBhzAusgAnsage">
         <property name="geometry">
          <rect>
-          <x>25</x>
-          <y>338</y>
+          <x>23</x>
+          <y>358</y>
           <width>301</width>
           <height>22</height>
          </rect>
@@ -295,8 +272,8 @@
        <widget class="QCheckBox" name="checkBoxCopyChangeNr1001">
         <property name="geometry">
          <rect>
-          <x>332</x>
-          <y>398</y>
+          <x>330</x>
+          <y>418</y>
           <width>301</width>
           <height>22</height>
          </rect>
@@ -305,24 +282,11 @@
          <string>1001 in 0100 umbenennen</string>
         </property>
        </widget>
-       <widget class="QCommandLinkButton" name="commandLinkButton">
-        <property name="geometry">
-         <rect>
-          <x>640</x>
-          <y>473</y>
-          <width>111</width>
-          <height>161</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Kopieren</string>
-        </property>
-       </widget>
        <widget class="QComboBox" name="comboBoxCopyBhzAusg">
         <property name="geometry">
          <rect>
           <x>24</x>
-          <y>300</y>
+          <y>320</y>
           <width>610</width>
           <height>27</height>
          </rect>
@@ -357,9 +321,9 @@
        <widget class="QCheckBox" name="checkBoxDaisyIgnoreTitleDigits">
         <property name="geometry">
          <rect>
-          <x>25</x>
-          <y>430</y>
-          <width>148</width>
+          <x>23</x>
+          <y>450</y>
+          <width>221</width>
           <height>22</height>
          </rect>
         </property>
@@ -367,15 +331,15 @@
          <string>Fuehrende Ziffern aus Dateinamen fuer Titel ignorieren (vor dem Kopieren einstellen!)</string>
         </property>
         <property name="text">
-         <string>Ziffern entfernen</string>
+         <string>Führende Ziffern entfernen</string>
         </property>
        </widget>
        <widget class="QComboBox" name="comboBoxPrefBitrate">
         <property name="geometry">
          <rect>
-          <x>410</x>
-          <y>430</y>
-          <width>121</width>
+          <x>24</x>
+          <y>570</y>
+          <width>610</width>
           <height>27</height>
          </rect>
         </property>
@@ -383,14 +347,148 @@
        <widget class="QLabel" name="label_13">
         <property name="geometry">
          <rect>
-          <x>336</x>
-          <y>430</y>
+          <x>20</x>
+          <y>550</y>
           <width>71</width>
           <height>17</height>
          </rect>
         </property>
         <property name="text">
          <string>Datenrate</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBoxDaisyLevel">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>450</y>
+          <width>271</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Ebenen aus Dateinamen ermitteln</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_7">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>490</y>
+          <width>281</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Trenner für Autor und Titel</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="comboBoxDaisyTrenner">
+        <property name="geometry">
+         <rect>
+          <x>24</x>
+          <y>510</y>
+          <width>610</width>
+          <height>27</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkBoxDaisyDateCalendar">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>480</y>
+          <width>391</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Datum aus Dateinamen ermitteln (z.B. fuer Kalender)</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_4">
+       <attribute name="title">
+        <string>2 Copy</string>
+       </attribute>
+       <widget class="QCommandLinkButton" name="commandLinkButton">
+        <property name="geometry">
+         <rect>
+          <x>650</x>
+          <y>450</y>
+          <width>111</width>
+          <height>161</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Kopieren</string>
+        </property>
+       </widget>
+       <widget class="QTextEdit" name="textEdit">
+        <property name="geometry">
+         <rect>
+          <x>24</x>
+          <y>90</y>
+          <width>610</width>
+          <height>521</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QProgressBar" name="progressBarCopy">
+        <property name="geometry">
+         <rect>
+          <x>24</x>
+          <y>630</y>
+          <width>610</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="value">
+         <number>24</number>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButtonClose1_2">
+        <property name="geometry">
+         <rect>
+          <x>650</x>
+          <y>630</y>
+          <width>111</width>
+          <height>27</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Quit</string>
+        </property>
+       </widget>
+       <widget class="Line" name="line_4">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>60</y>
+          <width>790</width>
+          <height>3</height>
+         </rect>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_12">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>30</y>
+          <width>610</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Copy - Tool</string>
         </property>
        </widget>
       </widget>
@@ -413,7 +511,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Daisy-Metadaten-Tool</string>
+         <string>Daisy - Metadaten</string>
         </property>
        </widget>
        <widget class="Line" name="line_3">
@@ -735,7 +833,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Daisy-Tool</string>
+         <string>Daisy - Tool</string>
         </property>
        </widget>
        <widget class="Line" name="line_2">
@@ -793,43 +891,20 @@
          <string>Quell-Ordner</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_7">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>130</y>
-          <width>610</width>
-          <height>17</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Trenner für Autor und Titel</string>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="comboBoxDaisyTrenner">
-        <property name="geometry">
-         <rect>
-          <x>24</x>
-          <y>150</y>
-          <width>610</width>
-          <height>27</height>
-         </rect>
-        </property>
-       </widget>
        <widget class="QTextEdit" name="textEditDaisy">
         <property name="geometry">
          <rect>
-          <x>20</x>
-          <y>420</y>
+          <x>24</x>
+          <y>140</y>
           <width>610</width>
-          <height>191</height>
+          <height>471</height>
          </rect>
         </property>
        </widget>
        <widget class="QCommandLinkButton" name="commandLinkButtonDaisy">
         <property name="geometry">
          <rect>
-          <x>640</x>
+          <x>650</x>
           <y>420</y>
           <width>111</width>
           <height>191</height>
@@ -843,7 +918,7 @@
         <property name="geometry">
          <rect>
           <x>24</x>
-          <y>641</y>
+          <y>630</y>
           <width>610</width>
           <height>25</height>
          </rect>
@@ -855,40 +930,14 @@
        <widget class="QPushButton" name="pushButtonClose2">
         <property name="geometry">
          <rect>
-          <x>640</x>
-          <y>640</y>
+          <x>650</x>
+          <y>630</y>
           <width>111</width>
           <height>27</height>
          </rect>
         </property>
         <property name="text">
          <string>Quit</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="checkBoxDaisyLevel">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>200</y>
-          <width>601</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Ebenen aus Dateinamen ermitteln</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="checkBoxDaisyDateCalendar">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>230</y>
-          <width>601</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Datum aus Dateinamen ermitteln (z.B. fuer Kalender)</string>
         </property>
        </widget>
       </widget>
