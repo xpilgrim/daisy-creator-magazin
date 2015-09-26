@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'daisy_creator_mag.ui'
 #
-# Created: Mon Sep 14 20:29:47 2015
+# Created: Sat Sep 26 18:14:57 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -36,7 +36,7 @@ class Ui_DaisyMain(object):
         self.tab = QtGui.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
         self.pushButtonClose1 = QtGui.QPushButton(self.tab)
-        self.pushButtonClose1.setGeometry(QtCore.QRect(640, 640, 111, 27))
+        self.pushButtonClose1.setGeometry(QtCore.QRect(650, 630, 111, 27))
         self.pushButtonClose1.setObjectName(_fromUtf8("pushButtonClose1"))
         self.checkBoxCopyChangeNr1000 = QtGui.QCheckBox(self.tab)
         self.checkBoxCopyChangeNr1000.setGeometry(QtCore.QRect(23, 418, 301, 22))
@@ -108,7 +108,7 @@ class Ui_DaisyMain(object):
         self.line.setFrameShadow(QtGui.QFrame.Sunken)
         self.line.setObjectName(_fromUtf8("line"))
         self.checkBoxDaisyIgnoreTitleDigits = QtGui.QCheckBox(self.tab)
-        self.checkBoxDaisyIgnoreTitleDigits.setGeometry(QtCore.QRect(23, 450, 221, 22))
+        self.checkBoxDaisyIgnoreTitleDigits.setGeometry(QtCore.QRect(23, 450, 291, 22))
         self.checkBoxDaisyIgnoreTitleDigits.setObjectName(_fromUtf8("checkBoxDaisyIgnoreTitleDigits"))
         self.comboBoxPrefBitrate = QtGui.QComboBox(self.tab)
         self.comboBoxPrefBitrate.setGeometry(QtCore.QRect(24, 570, 610, 27))
@@ -316,7 +316,7 @@ class Ui_DaisyMain(object):
         self.checkBoxCopyChangeNr1001.setText(_translate("DaisyMain", "1001 in 0100 umbenennen", None))
         self.label_2.setText(_translate("DaisyMain", "Quelle und Ziel", None))
         self.checkBoxDaisyIgnoreTitleDigits.setToolTip(_translate("DaisyMain", "Fuehrende Ziffern aus Dateinamen fuer Titel ignorieren (vor dem Kopieren einstellen!)", None))
-        self.checkBoxDaisyIgnoreTitleDigits.setText(_translate("DaisyMain", "Führende Ziffern entfernen", None))
+        self.checkBoxDaisyIgnoreTitleDigits.setText(_translate("DaisyMain", "Führende Ziffern fuer Titel entfernen", None))
         self.label_13.setText(_translate("DaisyMain", "Datenrate", None))
         self.checkBoxDaisyLevel.setText(_translate("DaisyMain", "Ebenen aus Dateinamen ermitteln", None))
         self.label_7.setText(_translate("DaisyMain", "Trenner für Autor und Titel", None))

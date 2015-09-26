@@ -27,8 +27,8 @@
        <widget class="QPushButton" name="pushButtonClose1">
         <property name="geometry">
          <rect>
-          <x>640</x>
-          <y>640</y>
+          <x>650</x>
+          <y>630</y>
           <width>111</width>
           <height>27</height>
          </rect>
@@ -323,7 +323,7 @@
          <rect>
           <x>23</x>
           <y>450</y>
-          <width>221</width>
+          <width>291</width>
           <height>22</height>
          </rect>
         </property>
@@ -331,7 +331,7 @@
          <string>Fuehrende Ziffern aus Dateinamen fuer Titel ignorieren (vor dem Kopieren einstellen!)</string>
         </property>
         <property name="text">
-         <string>Führende Ziffern entfernen</string>
+         <string>Führende Ziffern fuer Titel entfernen</string>
         </property>
        </widget>
        <widget class="QComboBox" name="comboBoxPrefBitrate">
