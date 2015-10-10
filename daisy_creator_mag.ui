@@ -40,8 +40,8 @@
        <widget class="QCheckBox" name="checkBoxCopyChangeNr1000">
         <property name="geometry">
          <rect>
-          <x>23</x>
-          <y>418</y>
+          <x>29</x>
+          <y>478</y>
           <width>301</width>
           <height>22</height>
          </rect>
@@ -100,8 +100,8 @@
        <widget class="QCheckBox" name="checkBoxCopyBhzIntro">
         <property name="geometry">
          <rect>
-          <x>330</x>
-          <y>358</y>
+          <x>336</x>
+          <y>418</y>
           <width>301</width>
           <height>22</height>
          </rect>
@@ -168,8 +168,8 @@
        <widget class="QCheckBox" name="checkBoxCopyBitrateChange">
         <property name="geometry">
          <rect>
-          <x>23</x>
-          <y>388</y>
+          <x>29</x>
+          <y>448</y>
           <width>301</width>
           <height>22</height>
          </rect>
@@ -210,8 +210,8 @@
         </property>
         <property name="geometry">
          <rect>
-          <x>330</x>
-          <y>388</y>
+          <x>336</x>
+          <y>448</y>
           <width>301</width>
           <height>22</height>
          </rect>
@@ -246,8 +246,8 @@
        <widget class="QCheckBox" name="checkBoxCopyBhzAusgAnsage">
         <property name="geometry">
          <rect>
-          <x>23</x>
-          <y>358</y>
+          <x>29</x>
+          <y>418</y>
           <width>301</width>
           <height>22</height>
          </rect>
@@ -272,8 +272,8 @@
        <widget class="QCheckBox" name="checkBoxCopyChangeNr1001">
         <property name="geometry">
          <rect>
-          <x>330</x>
-          <y>418</y>
+          <x>336</x>
+          <y>478</y>
           <width>301</width>
           <height>22</height>
          </rect>
@@ -321,8 +321,8 @@
        <widget class="QCheckBox" name="checkBoxDaisyIgnoreTitleDigits">
         <property name="geometry">
          <rect>
-          <x>23</x>
-          <y>450</y>
+          <x>29</x>
+          <y>510</y>
           <width>291</width>
           <height>22</height>
          </rect>
@@ -337,8 +337,8 @@
        <widget class="QComboBox" name="comboBoxPrefBitrate">
         <property name="geometry">
          <rect>
-          <x>24</x>
-          <y>570</y>
+          <x>30</x>
+          <y>630</y>
           <width>610</width>
           <height>27</height>
          </rect>
@@ -347,8 +347,8 @@
        <widget class="QLabel" name="label_13">
         <property name="geometry">
          <rect>
-          <x>20</x>
-          <y>550</y>
+          <x>30</x>
+          <y>610</y>
           <width>71</width>
           <height>17</height>
          </rect>
@@ -360,8 +360,8 @@
        <widget class="QCheckBox" name="checkBoxDaisyLevel">
         <property name="geometry">
          <rect>
-          <x>330</x>
-          <y>450</y>
+          <x>336</x>
+          <y>510</y>
           <width>271</width>
           <height>22</height>
          </rect>
@@ -373,8 +373,8 @@
        <widget class="QLabel" name="label_7">
         <property name="geometry">
          <rect>
-          <x>20</x>
-          <y>490</y>
+          <x>30</x>
+          <y>560</y>
           <width>281</width>
           <height>17</height>
          </rect>
@@ -386,8 +386,8 @@
        <widget class="QComboBox" name="comboBoxDaisyTrenner">
         <property name="geometry">
          <rect>
-          <x>24</x>
-          <y>510</y>
+          <x>30</x>
+          <y>580</y>
           <width>610</width>
           <height>27</height>
          </rect>
@@ -396,14 +396,27 @@
        <widget class="QCheckBox" name="checkBoxDaisyDateCalendar">
         <property name="geometry">
          <rect>
-          <x>330</x>
-          <y>480</y>
+          <x>336</x>
+          <y>540</y>
           <width>391</width>
           <height>22</height>
          </rect>
         </property>
         <property name="text">
          <string>Datum aus Dateinamen ermitteln (z.B. fuer Kalender)</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_14">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>390</y>
+          <width>610</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Einstellungen</string>
         </property>
        </widget>
       </widget>
