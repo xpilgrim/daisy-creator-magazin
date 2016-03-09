@@ -858,44 +858,45 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                     str(self.lineEditDaisySource.text()), "master.smil"), 'w')
         except IOError as (errno, strerror):
             self.showDebugMessage("I/O error({0}): {1}".format(errno, strerror))
-        else:
-            self.textEditDaisy.append(u"<b>MasterSmil-Datei schreiben...</b>")
-            fOutFile.write('<?xml version="1.0" encoding="utf-8"?>' + '\r\n')
-            fOutFile.write('<!DOCTYPE smil PUBLIC "-//W3C//DTD SMIL 1.0//EN"'
-                + ' "http://www.w3.org/TR/REC-smil/SMIL10.dtd">' + '\r\n')
-            fOutFile.write('<smil>' + '\r\n')
-            fOutFile.write('<head>' + '\r\n')
-            fOutFile.write('<meta name="dc:format" content="Daisy 2.02"/>'
+        return
+
+        self.textEditDaisy.append(u"<b>MasterSmil-Datei schreiben...</b>")
+        fOutFile.write('<?xml version="1.0" encoding="utf-8"?>' + '\r\n')
+        fOutFile.write('<!DOCTYPE smil PUBLIC "-//W3C//DTD SMIL 1.0//EN"'
+            + ' "http://www.w3.org/TR/REC-smil/SMIL10.dtd">' + '\r\n')
+        fOutFile.write('<smil>' + '\r\n')
+        fOutFile.write('<head>' + '\r\n')
+        fOutFile.write('<meta name="dc:format" content="Daisy 2.02"/>'
                            + '\r\n')
-            fOutFile.write('<meta name="dc:identifier" content="'
+        fOutFile.write('<meta name="dc:identifier" content="'
                            + self.lineEditMetaRefOrig.text() + '"/>' + '\r\n')
-            fOutFile.write('<meta name="dc:title" content="'
+        fOutFile.write('<meta name="dc:title" content="'
                            + self.lineEditMetaTitle.text() + '"/>' + '\r\n')
-            fOutFile.write('<meta name="ncc:generator"'
+        fOutFile.write('<meta name="ncc:generator"'
                 + ' content="KOM-IN-DaisyCreator"/>' + '\r\n')
-            fOutFile.write('<meta name="ncc:format" content="Daisy 2.0"/>'
+        fOutFile.write('<meta name="ncc:format" content="Daisy 2.0"/>'
                            + '\r\n')
-            fOutFile.write('<meta name="ncc:timeInThisSmil" content="'
+        fOutFile.write('<meta name="ncc:timeInThisSmil" content="'
                            + cTotalTime + '" />' + '\r\n')
 
-            fOutFile.write('<layout>' + '\r\n')
-            fOutFile.write('<region id="txt-view" />' + '\r\n')
-            fOutFile.write('</layout>' + '\r\n')
-            fOutFile.write('</head>' + '\r\n')
-            fOutFile.write('<body>' + '\r\n')
+        fOutFile.write('<layout>' + '\r\n')
+        fOutFile.write('<region id="txt-view" />' + '\r\n')
+        fOutFile.write('</layout>' + '\r\n')
+        fOutFile.write('</head>' + '\r\n')
+        fOutFile.write('<body>' + '\r\n')
 
-            z = 0
-            for item in dirAudios:
-                z += 1
-                # splitting
-                itemSplit = self.splitFilename(item)
-                cTitle = self.extractTitle(itemSplit)
-                fOutFile.write('<ref src="' + str(z).zfill(4) + '.smil" title="'
+        z = 0
+        for item in dirAudios:
+            z += 1
+            # splitting
+            itemSplit = self.splitFilename(item)
+            cTitle = self.extractTitle(itemSplit)
+            fOutFile.write('<ref src="' + str(z).zfill(4) + '.smil" title="'
                     + cTitle + '" id="smil_' + str(z).zfill(4) + '"/>' + '\r\n')
 
-            fOutFile.write('</body>' + '\r\n')
-            fOutFile.write('</smil>' + '\r\n')
-            fOutFile.close
+        fOutFile.write('</body>' + '\r\n')
+        fOutFile.write('</smil>' + '\r\n')
+        fOutFile.close
         self.textEditDaisy.append(u"<b>Master-smil-Datei geschrieben</b>")
 
     def writeSmil(self, lTotalElapsedTime, lFileTime, dirAudios):
