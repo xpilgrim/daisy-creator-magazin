@@ -969,6 +969,21 @@
         </property>
        </widget>
       </widget>
+      <widget class="QWidget" name="tab_6">
+       <attribute name="title">
+        <string>User Help</string>
+       </attribute>
+       <widget class="QTextEdit" name="textEditUserHelp">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>791</width>
+          <height>691</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </item>
    </layout>

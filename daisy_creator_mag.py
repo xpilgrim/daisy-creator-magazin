@@ -135,6 +135,27 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.textEditHelp.setTextCursor(cursor)
         fobj.close()
 
+    def readUserHelp(self):
+        """read user help from file"""
+        fileExist = os.path.isfile("user_help.md")
+        if fileExist is False:
+            self.showDebugMessage("File not exists")
+            self.textEdit.append(
+                "<font color='red'>"
+                + "benutzer-Hilfe-Datei konnte nicht geladen werden: </font>"
+                + "user_help.md")
+            return
+
+        fobj = open("user_help.md")
+        for line in fobj:
+            self.textEditUserHelp.append(line)
+        # set cursor on top of helpfile
+        cursor = self.textEditUserHelp.textCursor()
+        cursor.movePosition(QtGui.QTextCursor.Start,
+                            QtGui.QTextCursor.MoveAnchor, 0)
+        self.textEditUserHelp.setTextCursor(cursor)
+        fobj.close()
+
     def actionOpenCopySource(self):
         """Source of copy"""
         # QtCore.QDir.homePath()
@@ -1081,6 +1102,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.checkBoxCopyBitrateChange.setChecked(True)
         # Help-Text
         self.readHelp()
+        self.readUserHelp()
         self.show()
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'daisy_creator_mag.ui'
 #
-# Created: Sat Oct 10 16:47:17 2015
+# Created: Fri May  6 12:11:54 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -281,6 +281,12 @@ class Ui_DaisyMain(object):
         self.textEditHelp.setGeometry(QtCore.QRect(0, 0, 791, 691))
         self.textEditHelp.setObjectName(_fromUtf8("textEditHelp"))
         self.tabWidget.addTab(self.tab_5, _fromUtf8(""))
+        self.tab_6 = QtGui.QWidget()
+        self.tab_6.setObjectName(_fromUtf8("tab_6"))
+        self.textEditUserHelp = QtGui.QTextEdit(self.tab_6)
+        self.textEditUserHelp.setGeometry(QtCore.QRect(0, 0, 791, 691))
+        self.textEditUserHelp.setObjectName(_fromUtf8("textEditUserHelp"))
+        self.tabWidget.addTab(self.tab_6, _fromUtf8(""))
         self.gridLayout.addWidget(self.tabWidget, 0, 0, 1, 1)
         DaisyMain.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(DaisyMain)
@@ -363,4 +369,5 @@ class Ui_DaisyMain(object):
         self.pushButtonClose2.setText(_translate("DaisyMain", "Quit", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("DaisyMain", "3 Daisy", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), _translate("DaisyMain", "Help", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6), _translate("DaisyMain", "User Help", None))
 
