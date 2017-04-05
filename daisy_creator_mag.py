@@ -70,10 +70,10 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             "12", "13", "14", "15", "16", "17", "18", "19", "20",
             "21", "22", "23", "24"]
         self.app_nextAusgItems = ["I", "II", "01", "02", "03"]
-        self.app_bhzPfad = QtCore.QDir.homePath()
-        self.app_bhzPfadMeta = QtCore.QDir.homePath()
-        self.app_bhzPfadAusgabeansage = QtCore.QDir.homePath()
-        self.app_bhzPfadIntro = QtCore.QDir.homePath()
+        self.app_bhzPath = QtCore.QDir.homePath()
+        self.app_bhzPathMeta = QtCore.QDir.homePath()
+        self.app_bhzPathAusgabeansage = QtCore.QDir.homePath()
+        self.app_bhzPathIntro = QtCore.QDir.homePath()
         # we need ext package lame
         self.app_lame = ""
         self.connectActions()
@@ -106,11 +106,11 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
 
         config = ConfigParser.RawConfigParser()
         config.read("daisy_creator_mag.config")
-        self.app_bhzPfad = config.get('Ordner', 'BHZ')
-        self.app_bhzPfadMeta = config.get('Ordner', 'BHZ-Meta')
-        self.app_bhzPfadAusgabeansage = config.get('Ordner',
+        self.app_bhzPath = config.get('Ordner', 'BHZ')
+        self.app_bhzPathMeta = config.get('Ordner', 'BHZ-Meta')
+        self.app_bhzPathAusgabeansage = config.get('Ordner',
             'BHZ-Ausgabeansage')
-        self.app_bhzPfadIntro = config.get('Ordner', 'BHZ-Intro')
+        self.app_bhzPathIntro = config.get('Ordner', 'BHZ-Intro')
         self.app_bhzItems = config.get('Blindenhoerzeitschriften',
             'BHZ').split(",")
         self.app_lame = config.get('Programme', 'LAME')
@@ -163,7 +163,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         dirSource = QtGui.QFileDialog.getExistingDirectory(
                         self,
                         "Quell-Ordner",
-                        self.app_bhzPfad
+                        self.app_bhzPath
                     )
         # Don't attempt to open if open dialog
         # was cancelled away.
@@ -177,7 +177,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         dirSource = QtGui.QFileDialog.getExistingDirectory(
                         self,
                         "Quell-Ordner",
-                        self.app_bhzPfad
+                        self.app_bhzPath
                     )
         # Don't attempt to open if open dialog
         # was cancelled away.
@@ -191,7 +191,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         dirDest = QtGui.QFileDialog.getExistingDirectory(
                         self,
                         "Ziel-Ordner",
-                        self.app_bhzPfad
+                        self.app_bhzPath
                     )
         # Don't attempt to open if open dialog
         # was cancelled away.
@@ -233,7 +233,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         mfile = QtGui.QFileDialog.getOpenFileName(
                         self,
                         "Daisy_Meta",
-                        self.app_bhzPfadMeta
+                        self.app_bhzPathMeta
                     )
         # Don't attempt to open if open dialog
         # was cancelled away.
@@ -378,7 +378,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.copyZusatzDatei(2)
 
         # load metadata
-        self.lineEditMetaSource.setText(self.app_bhzPfadMeta + "/Daisy_Meta_"
+        self.lineEditMetaSource.setText(self.app_bhzPathMeta + "/Daisy_Meta_"
                                         + self.comboBoxCopyBhz.currentText())
         self.metaLoadFile()
         # enter path of source and destination
@@ -395,7 +395,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
 
     def copyIntro(self):
         """copy Intro"""
-        fileToCopySource = (self.app_bhzPfadIntro + "/Intro_"
+        fileToCopySource = (self.app_bhzPathIntro + "/Intro_"
                             + self.comboBoxCopyBhz.currentText() + ".mp3")
         #if self.comboBoxCopyBhz.currentText() == "Bibel_fuer_heute":
         if self.checkBoxDaisyLevel.isChecked():
@@ -426,7 +426,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
 
     def copyAusgabeAnsage(self):
         """copy issue number"""
-        pfadAusgabe = (self.app_bhzPfadAusgabeansage
+        pfadAusgabe = (self.app_bhzPathAusgabeansage
                        + "_" + self.comboBoxCopyBhzAusg.currentText()[0:4]
                        + "_" + self.comboBoxCopyBhz.currentText())
         self.showDebugMessage(pfadAusgabe)
@@ -1074,7 +1074,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         # Bhz in Combo
         for item in self.app_bhzItems:
             self.comboBoxCopyBhz.addItem(item)
-        # Combi-items: numbers according to years
+        # Combo-items: numbers according to years
         prevYear = str(datetime.datetime.now().year - 1)
         currentYear = str(datetime.datetime.now().year)
         nextYear = str(datetime.datetime.now().year + 1)
