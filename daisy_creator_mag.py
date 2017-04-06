@@ -596,8 +596,8 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         """check bitrate, when necessary recode in new destination"""
         isChangedAndCopy = None
         audioSource = MP3(fileToCopySource)
-        if (audioSource.info.bitrate ==
-            int(self.comboBoxPrefBitrate.currentText()) * 1000):
+        if (audioSource.info.bitrate / 1000 ==
+            int(self.comboBoxPrefBitrate.currentText())):
             return isChangedAndCopy
 
         isEncoded = None
