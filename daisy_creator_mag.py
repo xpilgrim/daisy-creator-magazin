@@ -279,6 +279,12 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             return
 
         self.showDebugMessage(dirsSource)
+
+        self.textEdit.append("<b>Pruefen...</b>")
+        checkOK = self.checkFilenames(dirsSource)
+        if checkOK is None:
+            return
+
         self.textEdit.append("<b>Kopieren:</b>")
         z = 0
         zList = len(dirsSource)
@@ -518,21 +524,52 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
 
     def checkFilename(self, fileName):
         """check for spaces and non ascii characters"""
-        try:
-            cfileName = str(fileName)
-        except Exception, e:
-            if str(e).find("'ascii' codec can't encode character") != -1:
-                    errorMessage = "<b>Unerlaubte(s) Zeichen im Dateinamen!</b>"
-            self.showDebugMessage(errorMessage)
-            self.textEdit.append(errorMessage)
-            self.tabWidget.setCurrentIndex(1)
-            return None
+        error = None
+        self.textEdit.append(fileName)
+        if type(fileName) is str:
+            try:
+                cfileName = fileName.encode("ascii")
+            except Exception, e:
+                error = str(e)
+        else:
+            # maybe fileName could be QString, so we must convert it
+            try:
+                cfileName = str(fileName)
+                self.textEdit.append(cfileName)
+            except Exception, e:
+                error = str(e)
+
+        if error is not None:
+            if (error.find("'ascii' codec can't encode character") != -1
+                or
+                error.find("'ascii' codec can't decode byte") != -1):
+                errorMessage = ("<b>Unerlaubte(s) Zeichen im Dateinamen!</b>")
+                self.showDebugMessage(errorMessage)
+                self.textEdit.append(errorMessage)
+                self.tabWidget.setCurrentIndex(1)
+                return None
+            else:
+                errorMessage = ("<b>Fehler im Dateinamen!</b>")
+                self.showDebugMessage(errorMessage)
+                self.textEdit.append(errorMessage)
+                self.tabWidget.setCurrentIndex(1)
+                return None
 
         if cfileName.find(" ") != -1:
-            errorMessage = "<b>Unerlaubtes Leerzeichen im Dateinamen!</b>"
+            errorMessage = ("<b>Unerlaubtes Leerzeichen im Dateinamen!</b>")
             self.textEdit.append(errorMessage)
             self.tabWidget.setCurrentIndex(1)
             return None
+        return "OK"
+
+    def checkFilenames(self, filesSource):
+        for item in filesSource:
+            if (item[len(item) - 4:len(item)] != ".MP3"
+                                and item[len(item) - 4:len(item)] != ".mp3"):
+                continue
+            checkOK = self.checkFilename(item)
+            if checkOK is None:
+                return None
         return "OK"
 
     def checkCangeId3(self, fileToCopyDest):
