@@ -213,6 +213,9 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.lineEditCopyFile1.setText(file1)
             self.textEdit.append("Zusatz-Datei 1:")
             self.textEdit.append(file1)
+            checkOK = self.checkFilename(file1)
+            if checkOK is None:
+                return
 
     def actionOpenCopyFile2(self):
         """Additional file 2 to copy"""
@@ -227,6 +230,9 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.lineEditCopyFile2.setText(file2)
             self.textEdit.append("Zusatz-Datei 2:")
             self.textEdit.append(file2)
+            checkOK = self.checkFilename(file2)
+            if checkOK is None:
+                return
 
     def actionOpenMetaFile(self):
         """Metafile to load"""
@@ -509,6 +515,25 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                     "<font color='red'>Es fehlt das Python-Modul: </font> "
                         + pModule)
             return False
+
+    def checkFilename(self, fileName):
+        """check for spaces and non ascii characters"""
+        try:
+            cfileName = str(fileName)
+        except Exception, e:
+            if str(e).find("'ascii' codec can't encode character") != -1:
+                    errorMessage = "<b>Unerlaubte(s) Zeichen im Dateinamen!</b>"
+            self.showDebugMessage(errorMessage)
+            self.textEdit.append(errorMessage)
+            self.tabWidget.setCurrentIndex(1)
+            return None
+
+        if cfileName.find(" ") != -1:
+            errorMessage = "<b>Unerlaubtes Leerzeichen im Dateinamen!</b>"
+            self.textEdit.append(errorMessage)
+            self.tabWidget.setCurrentIndex(1)
+            return None
+        return "OK"
 
     def checkCangeId3(self, fileToCopyDest):
         """check id3 Tags, mayby kill it"""
