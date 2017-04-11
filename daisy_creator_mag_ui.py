@@ -107,7 +107,7 @@ class Ui_DaisyMain(object):
         self.line.setFrameShadow(QtGui.QFrame.Sunken)
         self.line.setObjectName(_fromUtf8("line"))
         self.checkBoxDaisyIgnoreTitleDigits = QtGui.QCheckBox(self.tab_1)
-        self.checkBoxDaisyIgnoreTitleDigits.setGeometry(QtCore.QRect(29, 510, 291, 22))
+        self.checkBoxDaisyIgnoreTitleDigits.setGeometry(QtCore.QRect(29, 510, 311, 22))
         self.checkBoxDaisyIgnoreTitleDigits.setObjectName(_fromUtf8("checkBoxDaisyIgnoreTitleDigits"))
         self.comboBoxPrefBitrate = QtGui.QComboBox(self.tab_1)
         self.comboBoxPrefBitrate.setGeometry(QtCore.QRect(30, 630, 610, 27))
@@ -325,7 +325,7 @@ class Ui_DaisyMain(object):
         self.label_2.setText(_translate("DaisyMain", "Quelle und Ziel", None))
         self.checkBoxDaisyIgnoreTitleDigits.setToolTip(_translate("DaisyMain", "Für DTB Inhaltsverzeichnis: \n"
 "Titel aus Dateinamen verwenden und fuehrende Ziffern entfernen", None))
-        self.checkBoxDaisyIgnoreTitleDigits.setText(_translate("DaisyMain", "Führende Ziffern fuer Titel entfernen", None))
+        self.checkBoxDaisyIgnoreTitleDigits.setText(_translate("DaisyMain", "Titel aus Dateinamen fuer TOC benutzen", None))
         self.label_13.setText(_translate("DaisyMain", "Datenrate", None))
         self.checkBoxDaisyLevel.setText(_translate("DaisyMain", "Ebenen aus Dateinamen ermitteln", None))
         self.label_7.setText(_translate("DaisyMain", "Trenner für Autor und Titel", None))

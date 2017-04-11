@@ -323,7 +323,7 @@
          <rect>
           <x>29</x>
           <y>510</y>
-          <width>291</width>
+          <width>311</width>
           <height>22</height>
          </rect>
         </property>
@@ -332,7 +332,7 @@
 Titel aus Dateinamen verwenden und fuehrende Ziffern entfernen</string>
         </property>
         <property name="text">
-         <string>Führende Ziffern fuer Titel entfernen</string>
+         <string>Titel aus Dateinamen fuer TOC benutzen</string>
         </property>
        </widget>
        <widget class="QComboBox" name="comboBoxPrefBitrate">
