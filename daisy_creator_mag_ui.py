@@ -323,7 +323,8 @@ class Ui_DaisyMain(object):
         self.lineEditCopySource.setText(_translate("DaisyMain", "Quell-Ordner", None))
         self.checkBoxCopyChangeNr1001.setText(_translate("DaisyMain", "1001 in 0100 umbenennen", None))
         self.label_2.setText(_translate("DaisyMain", "Quelle und Ziel", None))
-        self.checkBoxDaisyIgnoreTitleDigits.setToolTip(_translate("DaisyMain", "Fuehrende Ziffern aus Dateinamen fuer Titel ignorieren (vor dem Kopieren einstellen!)", None))
+        self.checkBoxDaisyIgnoreTitleDigits.setToolTip(_translate("DaisyMain", "Für DTB Inhaltsverzeichnis: \n"
+"Titel aus Dateinamen verwenden und fuehrende Ziffern entfernen", None))
         self.checkBoxDaisyIgnoreTitleDigits.setText(_translate("DaisyMain", "Führende Ziffern fuer Titel entfernen", None))
         self.label_13.setText(_translate("DaisyMain", "Datenrate", None))
         self.checkBoxDaisyLevel.setText(_translate("DaisyMain", "Ebenen aus Dateinamen ermitteln", None))

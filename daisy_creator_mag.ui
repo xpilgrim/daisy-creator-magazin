@@ -328,7 +328,8 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Fuehrende Ziffern aus Dateinamen fuer Titel ignorieren (vor dem Kopieren einstellen!)</string>
+         <string>Für DTB Inhaltsverzeichnis: 
+Titel aus Dateinamen verwenden und fuehrende Ziffern entfernen</string>
         </property>
         <property name="text">
          <string>Führende Ziffern fuer Titel entfernen</string>

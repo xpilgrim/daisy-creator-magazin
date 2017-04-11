@@ -38,7 +38,7 @@ lets the filename begin with the number "0101".
 Options-Section on tab one
 --------------------------
 Here, you can select:
-1. Copy Magazin-Number
+1. Copy Magazin-Issue
 This will copy a audiofile, with e.g. a separate produced announcement of your magazin-number, in the daisy-structure
 2. Copy Intro
 This will copy a audiofile with a separate produced jingle or intro
@@ -47,6 +47,11 @@ This check the bitrate of each audiofile and changes it to the choosen rate on t
 4. Rename 1000 (or 1001) to 0100 (0101)
 This is used, when the first recordet audiofile (e.g. with a special announcement) 
 must sorted before the additive audiofiles (see Additional audiofiles)
+5. For DTB TOC: Use titles from filenames an cut leading numbers in filename for TOC
+6. Read levels from filenames (digit after first underscore: 1001_2)
+7. Read date from filenames for DTB TOC
+8. Chose character for split author and title for DTB TOC
+9. Bitrate
 
 Preferences
 -----------
