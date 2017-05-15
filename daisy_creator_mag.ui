@@ -1001,6 +1001,53 @@ Titel aus Dateinamen verwenden und fuehrende Ziffern entfernen</string>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <tabstops>
+  <tabstop>lineEditCopySource</tabstop>
+  <tabstop>toolButtonCopySource</tabstop>
+  <tabstop>lineEditCopyDest</tabstop>
+  <tabstop>toolButtonCopyDest</tabstop>
+  <tabstop>lineEditCopyFile1</tabstop>
+  <tabstop>toolButtonCopyFile1</tabstop>
+  <tabstop>lineEditCopyFile2</tabstop>
+  <tabstop>toolButtonCopyFile2</tabstop>
+  <tabstop>comboBoxCopyBhz</tabstop>
+  <tabstop>comboBoxCopyBhzAusg</tabstop>
+  <tabstop>checkBoxCopyBhzAusgAnsage</tabstop>
+  <tabstop>checkBoxCopyBhzIntro</tabstop>
+  <tabstop>checkBoxCopyBitrateChange</tabstop>
+  <tabstop>checkBoxCopyID3Change</tabstop>
+  <tabstop>checkBoxCopyChangeNr1000</tabstop>
+  <tabstop>checkBoxCopyChangeNr1001</tabstop>
+  <tabstop>checkBoxDaisyIgnoreTitleDigits</tabstop>
+  <tabstop>checkBoxDaisyLevel</tabstop>
+  <tabstop>checkBoxDaisyDateCalendar</tabstop>
+  <tabstop>comboBoxDaisyTrenner</tabstop>
+  <tabstop>comboBoxPrefBitrate</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>textEdit</tabstop>
+  <tabstop>commandLinkButton</tabstop>
+  <tabstop>pushButtonClose2</tabstop>
+  <tabstop>lineEditMetaSource</tabstop>
+  <tabstop>toolButtonMetaFile</tabstop>
+  <tabstop>lineEditMetaProducer</tabstop>
+  <tabstop>lineEditMetaAutor</tabstop>
+  <tabstop>lineEditMetaTitle</tabstop>
+  <tabstop>lineEditMetaEdition</tabstop>
+  <tabstop>lineEditMetaNarrator</tabstop>
+  <tabstop>lineEditMetaKeywords</tabstop>
+  <tabstop>lineEditMetaRefOrig</tabstop>
+  <tabstop>lineEditMetaPublisher</tabstop>
+  <tabstop>lineEditMetaYear</tabstop>
+  <tabstop>commandLinkButtonMeta</tabstop>
+  <tabstop>lineEditDaisySource</tabstop>
+  <tabstop>toolButtonDaisySource</tabstop>
+  <tabstop>textEditDaisy</tabstop>
+  <tabstop>commandLinkButtonDaisy</tabstop>
+  <tabstop>pushButtonClose3</tabstop>
+  <tabstop>textEditHelp</tabstop>
+  <tabstop>textEditUserHelp</tabstop>
+  <tabstop>pushButtonClose1</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
