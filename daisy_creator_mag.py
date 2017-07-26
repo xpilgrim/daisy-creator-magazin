@@ -942,7 +942,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
                     str(self.lineEditDaisySource.text()), "master.smil"), 'w')
         except IOError as (errno, strerror):
             self.showDebugMessage("I/O error({0}): {1}".format(errno, strerror))
-        return
+            return
 
         self.textEditDaisy.append(u"<b>MasterSmil-Datei schreiben...</b>")
         fOutFile.write('<?xml version="1.0" encoding="utf-8"?>' + '\r\n')
