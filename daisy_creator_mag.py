@@ -384,10 +384,10 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
             self.copyAusgabeAnsage()
 
         if self.lineEditCopyFile1.text() != "Datei 1 waehlen":
-            self.copyZusatzDatei(1)
+            self.copyFileAdditionally(1)
 
         if self.lineEditCopyFile2.text() != "Datei 2 waehlen":
-            self.copyZusatzDatei(2)
+            self.copyFileAdditionally(2)
 
         # load metadata
         self.lineEditMetaSource.setText(self.app_bhzPathMeta + "/Daisy_Meta_"
@@ -401,7 +401,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         try:
             shutil.copy(fileToCopySource, fileToCopyDest)
         except Exception, e:
-            logMessage = "copy_file Error: %s" % str(e)
+            logMessage = "copy_file Error: %s" % str(e).decode('utf-8')
             self.showDebugMessage(logMessage)
             self.textEdit.append(logMessage + fileToCopyDest)
 
@@ -463,7 +463,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         self.copyFile(fileToCopySource, fileToCopyDest)
         self.checkCangeId3(fileToCopyDest)
 
-    def copyZusatzDatei(self, n):
+    def copyFileAdditionally(self, n):
         """copy additional file kopieren"""
         if n == 1:
             filename = ntpath.basename(str(self.lineEditCopyFile1.text()))
