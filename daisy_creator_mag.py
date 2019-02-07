@@ -64,7 +64,7 @@ class DaisyCopy(QtGui.QMainWindow, daisy_creator_mag_ui.Ui_DaisyMain):
         # keeping a reference.
         self.app_debugMod = "yes"
         self.app_bhzItems = ["Zeitschrift"]
-        self.app_prevAusgItems = ["10", "11", "12", "22", "23", "24"]
+        self.app_prevAusgItems = ["06","07","08","09","10", "11", "12", "21", "22", "23", "24"]
         self.app_currentAusgItems = ["I", "II", "III", "IV", "01", "02",
             "03", "04", "05", "06", "07", "08", "09", "10", "11",
             "12", "13", "14", "15", "16", "17", "18", "19", "20",
