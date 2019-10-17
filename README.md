@@ -1,3 +1,5 @@
+*Was moved to codeberg.org!*
+
 daisy-creator-magazin
 =====================
 
